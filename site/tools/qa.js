@@ -72,7 +72,9 @@ async function run(theme, OUT) {
             const txt = await page.$eval('.ix .find span', e => e.textContent);
             if (txt === 'All found') break;
             const id = await page.evaluate(([fig, t]) => FIGS[fig].labels.find(l => l.en === t).id, [st.spec.fig, txt]);
-            await page.click(`.ix .pin.dot[data-id="${id}"]`, { force: true });
+            const sel = `.ix .pin.dot[data-id="${id}"]`;
+            await page.$eval(sel, e => e.scrollIntoView({ block: 'center' }));
+            await page.click(sel, { force: true });
           }
         } else if (st.kind === 'order') {
           for (const it of st.spec.items) { const id = typeof it === "object" ? it.id : it; await page.click(`.ix .tray .chipbtn[data-id="${id}"]`); await page.waitForTimeout(60); }
