@@ -991,5 +991,411 @@
   "w": 800,
   "credit": "Slide B17 (TeachMeAnatomy)",
   "labels": []
+ },
+ "quadrants": {
+  "src": "quadrants.jpeg",
+  "w": 720,
+  "credit": "Slides A16 / B24",
+  "labels": [
+   {
+    "id": "ruq",
+    "en": "RUQ",
+    "ar": "الربع العلوي الأيمن",
+    "box": [
+     33.5,
+     55,
+     47.3,
+     59.2
+    ],
+    "note": "Right upper quadrant: liver and gallbladder."
+   },
+   {
+    "id": "luq",
+    "en": "LUQ",
+    "ar": "الربع العلوي الأيسر",
+    "box": [
+     56.8,
+     55,
+     70.1,
+     59.2
+    ],
+    "note": "Left upper quadrant: stomach and spleen."
+   },
+   {
+    "id": "rlq",
+    "en": "RLQ",
+    "ar": "الربع السفلي الأيمن",
+    "box": [
+     33.5,
+     70.4,
+     46.7,
+     74.6
+    ],
+    "note": "Right lower quadrant: cecum and appendix."
+   },
+   {
+    "id": "llq",
+    "en": "LLQ",
+    "ar": "الربع السفلي الأيسر",
+    "box": [
+     56.8,
+     70.4,
+     69.7,
+     74.6
+    ],
+    "note": "Left lower quadrant."
+   },
+   {
+    "id": "liver",
+    "en": "Liver",
+    "ar": "الكبد",
+    "box": [
+     9.8,
+     42.3,
+     18.7,
+     46.2
+    ],
+    "note": ""
+   },
+   {
+    "id": "gb",
+    "en": "Gallbladder",
+    "ar": "المرارة",
+    "box": [
+     0,
+     50.3,
+     18.3,
+     54.2
+    ],
+    "note": ""
+   },
+   {
+    "id": "iliac",
+    "en": "Iliac crest",
+    "ar": "عرف الحرقفة",
+    "box": [
+     2.3,
+     62,
+     18.3,
+     66.2
+    ],
+    "note": ""
+   },
+   {
+    "id": "cecum",
+    "en": "Cecum",
+    "ar": "الأعور",
+    "box": [
+     6.3,
+     73.8,
+     18.3,
+     78.2
+    ],
+    "note": ""
+   },
+   {
+    "id": "appendix",
+    "en": "Appendix",
+    "ar": "الزائدة",
+    "box": [
+     2.3,
+     78.8,
+     18.3,
+     82.6
+    ],
+    "note": ""
+   },
+   {
+    "id": "costal",
+    "en": "Costal arch",
+    "ar": "القوس الضلعي",
+    "box": [
+     84.3,
+     37.3,
+     95.5,
+     43.8
+    ],
+    "note": ""
+   },
+   {
+    "id": "spleen",
+    "en": "Spleen",
+    "ar": "الطحال",
+    "box": [
+     84.3,
+     44.3,
+     96.3,
+     48.2
+    ],
+    "note": ""
+   },
+   {
+    "id": "stomach",
+    "en": "Stomach",
+    "ar": "المعدة",
+    "box": [
+     84.3,
+     48,
+     98.5,
+     51.8
+    ],
+    "note": ""
+   },
+   {
+    "id": "umbilicus",
+    "en": "Umbilicus",
+    "ar": "السرة",
+    "box": [
+     84.3,
+     60.3,
+     100,
+     64.6
+    ],
+    "note": ""
+   },
+   {
+    "id": "si",
+    "en": "Small intestine",
+    "ar": "الأمعاء الدقيقة",
+    "box": [
+     84.3,
+     66.3,
+     98.5,
+     72.6
+    ],
+    "note": ""
+   },
+   {
+    "id": "colon",
+    "en": "Colon",
+    "ar": "القولون",
+    "box": [
+     84.3,
+     74.3,
+     94.8,
+     78.2
+    ],
+    "note": ""
+   },
+   {
+    "id": "inguinal",
+    "en": "Inguinal ligament",
+    "ar": "الرباط الإربي",
+    "box": [
+     84.3,
+     77.6,
+     99,
+     83.6
+    ],
+    "note": ""
+   },
+   {
+    "id": "rectum",
+    "en": "Rectum",
+    "ar": "المستقيم",
+    "box": [
+     85.3,
+     83.4,
+     98.3,
+     87.6
+    ],
+    "note": ""
+   },
+   {
+    "id": "pubic",
+    "en": "Pubic symphysis",
+    "ar": "الارتفاق العاني",
+    "box": [
+     69.8,
+     93,
+     87.8,
+     99.7
+    ],
+    "note": ""
+   }
+  ]
+ },
+ "regions": {
+  "src": "regions.jpeg",
+  "w": 385,
+  "credit": "Slides A17 / B24",
+  "labels": []
+ },
+ "hydro": {
+  "src": "hydro.jpeg",
+  "w": 620,
+  "credit": "Slides A33 / B36",
+  "labels": [
+   {
+    "id": "hydroneph",
+    "en": "Hydronephrosis",
+    "ar": "استسقاء الكلية",
+    "box": [
+     0,
+     0,
+     29.8,
+     5
+    ],
+    "note": "Kidney swollen with backed-up urine."
+   },
+   {
+    "id": "normk",
+    "en": "Normal kidney",
+    "ar": "كلية طبيعية",
+    "box": [
+     77.8,
+     0,
+     93.3,
+     7
+    ],
+    "note": ""
+   },
+   {
+    "id": "hydrour",
+    "en": "Hydroureter",
+    "ar": "استسقاء الحالب",
+    "box": [
+     6.3,
+     48.8,
+     29.8,
+     53.7
+    ],
+    "note": "Ureter swollen above the block."
+   },
+   {
+    "id": "normur",
+    "en": "Normal ureter",
+    "ar": "حالب طبيعي",
+    "box": [
+     84.8,
+     51.3,
+     100,
+     59.8
+    ],
+    "note": ""
+   },
+   {
+    "id": "stone",
+    "en": "Stone",
+    "ar": "الحصاة",
+    "box": [
+     16.8,
+     63.3,
+     29.3,
+     67.5
+    ],
+    "note": ""
+   },
+   {
+    "id": "stricture",
+    "en": "Stricture",
+    "ar": "تضيّق",
+    "box": [
+     12.3,
+     67.3,
+     29.3,
+     71.2
+    ],
+    "note": ""
+   },
+   {
+    "id": "bladder",
+    "en": "Urinary bladder",
+    "ar": "المثانة",
+    "box": [
+     12.5,
+     78.5,
+     29.3,
+     90.5
+    ],
+    "note": ""
+   }
+  ]
+ },
+ "fistula": {
+  "src": "fistula.jpeg",
+  "w": 480,
+  "credit": "Slide A52",
+  "labels": [
+   {
+    "id": "fist",
+    "en": "Fistula",
+    "ar": "ناسور",
+    "box": [
+     60.8,
+     9.8,
+     72.3,
+     19.3
+    ],
+    "note": "Direct surgical join of an artery to a vein."
+   },
+   {
+    "id": "vein",
+    "en": "Vein",
+    "ar": "وريد",
+    "box": [
+     71.8,
+     4.8,
+     80.3,
+     13.3
+    ],
+    "note": ""
+   },
+   {
+    "id": "artery",
+    "en": "Artery",
+    "ar": "شريان",
+    "box": [
+     70.8,
+     63.8,
+     81.3,
+     73.3
+    ],
+    "note": ""
+   }
+  ]
+ },
+ "graft": {
+  "src": "graft.jpeg",
+  "w": 476,
+  "credit": "Slide A52",
+  "labels": [
+   {
+    "id": "graft",
+    "en": "Looped graft",
+    "ar": "وصلة ملتفّة",
+    "box": [
+     52.8,
+     16.8,
+     72.3,
+     27.3
+    ],
+    "note": "A looped tube joining artery and vein (AV shunt)."
+   },
+   {
+    "id": "vein",
+    "en": "Vein",
+    "ar": "وريد",
+    "box": [
+     73.8,
+     16.8,
+     81.3,
+     27.3
+    ],
+    "note": ""
+   },
+   {
+    "id": "artery",
+    "en": "Artery",
+    "ar": "شريان",
+    "box": [
+     71.8,
+     65.8,
+     83.3,
+     76.3
+    ],
+    "note": ""
+   }
+  ]
  }
 }

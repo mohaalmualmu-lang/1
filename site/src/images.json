@@ -1,0 +1,59 @@
+{
+ "stone_photo": {
+  "src": "stone_photo.jpeg",
+  "w": 482
+ },
+ "ivp": {
+  "src": "ivp.jpeg",
+  "w": 482
+ },
+ "uremic_frost": {
+  "src": "uremic_frost.jpeg",
+  "w": 259
+ },
+ "ecg_peaked": {
+  "src": "ecg_peaked.jpeg",
+  "w": 700,
+  "q": 70
+ },
+ "ecg_wide": {
+  "src": "ecg_wide.jpeg",
+  "w": 1000,
+  "q": 68
+ },
+ "strip": {
+  "src": "strip.jpeg",
+  "w": 650,
+  "q": 70
+ },
+ "hd_photo": {
+  "src": "hd_photo.jpeg",
+  "w": 482
+ },
+ "pd_machine": {
+  "src": "pd_machine.jpeg",
+  "w": 482
+ },
+ "torsion_ill": {
+  "src": "torsion_ill.png",
+  "w": 512
+ },
+ "phimosis": {
+  "src": "phimosis.jpeg",
+  "w": 482
+ },
+ "paraphimosis": {
+  "src": "paraphimosis.jpeg",
+  "w": 482
+ },
+ "table21_2": {
+  "src": "table21_2.jpeg",
+  "w": 600,
+  "q": 66
+ },
+ "table21_3": {
+  "src": "table21_3.jpeg",
+  "w": 1000,
+  "q": 64
+ }
+}

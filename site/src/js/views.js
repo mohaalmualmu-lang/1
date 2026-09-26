@@ -93,7 +93,7 @@ function back() {
   window.scrollTo(0, 0);
 }
 const NAV = [['home', 'Home', 'home'], ['learn', 'Learn', 'learn'], ['cards', 'Cards', 'cards'], ['search', 'Search', 'search'], ['more', 'More', 'more']];
-const NAVOF = { home: 'home', learn: 'learn', module: 'learn', cards: 'cards', search: 'search', more: 'more', mistakes: 'more', settings: 'more', arabic: 'more', soon: 'more' };
+const NAVOF = { home: 'home', learn: 'learn', module: 'learn', cards: 'cards', search: 'search', more: 'more', mistakes: 'more', settings: 'more', arabic: 'more', exam: 'more', numbers: 'more', cheat: 'more', hub: 'more', lab: 'more' };
 
 function render() {
   const app = $('#app');
@@ -206,14 +206,14 @@ function toolsSection() {
   const mist = Object.keys(S.mist).length;
   const tools = [
     ['cards', I.cards, 'Flashcards', `Spaced review · ${dueQueue().length} due`],
-    ['search', I.search, 'Search', 'Every card, question and label'],
+    ['exam', I.exam, 'Exam builder', 'Timed, mixed, weakest-first'],
     ['mistakes', I.mistake, 'My mistakes', mist ? `${mist} to fix` : 'Nothing to fix yet'],
-    ['arabic', I.arabic, 'ملخص عربي', 'Arabic summary per module'],
-    ['soon:exam', I.exam, 'Exam builder', 'Timed mixed exams'],
-    ['soon:numbers', I.hash, 'Numbers drill', 'Every value in the chapter'],
-    ['soon:cheat', I.sheet, 'Cheat sheet', 'Searchable one-pager'],
-    ['soon:hub', I.hub, 'Entity hub', 'Compare conditions side by side'],
-    ['soon:lab', I.image, 'Visual lab', 'Every figure + picture quiz'],
+    ['numbers', I.hash, 'Numbers drill', `${NUMBERS.length} values to lock in`],
+    ['lab', I.image, 'Visual lab', 'Figures, 3D, simulators, picture quiz'],
+    ['hub', I.hub, 'Entity hub', 'Compare + “which one is it?”'],
+    ['cheat', I.sheet, 'Cheat sheet', 'Every list and table, filterable'],
+    ['search', I.search, 'Search', 'Every card, question and label'],
+    ['arabic', I.arabic, 'ملخص عربي', 'Arabic summary for all modules'],
     ['settings', I.gear, 'Settings', 'Theme, question placement, sound'],
   ];
   const sec = el(`<section class="sect"><header><h2>Tools</h2></header><div class="tools"></div></section>`);
@@ -229,7 +229,7 @@ function toolsSection() {
 VIEWS.learn = (app) => {
   app.appendChild(topBar('Learn', '8 modules · teaching order'));
   const m = mainEl(); app.appendChild(m);
-  m.appendChild(el(`<p class="lede" style="margin-bottom:16px">Each module teaches one idea per card, asks before it tells, drops you into an interactive, then locks in what you missed. Module 1 is ready; the rest arrive in the full build.</p>`));
+  m.appendChild(el(`<p class="lede" style="margin-bottom:16px">Each module teaches one idea per card, asks before it tells, drops you into an interactive, then locks in what you missed. Work through them in order; each one builds on the last.</p>`));
   const box = el('<div class="mods"></div>');
   MODULES.forEach(x => box.appendChild(modRow(x)));
   m.appendChild(box);
@@ -317,17 +317,21 @@ STEP_RENDER.card = (w, s, { c, flow, p }) => {
   }
   content.appendChild(body);
   if (s.viz) content.appendChild(el(VIZ[s.viz]()));
-  if (s.fig) {
+  if (s.html) content.appendChild(el(`<div>${s.html}</div>`));
+  const figs = s.figs || (s.fig ? [{ k: s.fig, cap: s.cap, only: s.figLabels }] : []);
+  const fgrid = el(`<div style="display:grid;gap:14px;${figs.length > 1 ? 'grid-template-columns:repeat(auto-fit,minmax(150px,1fr))' : ''}"></div>`);
+  figs.forEach(F => {
     const fg = el('<figure></figure>');
-    const f = figureEl(s.fig, { only: s.figLabels });
+    const f = figureEl(F.k, { only: F.only, labels: F.labels });
     f.style.cursor = 'zoom-in';
-    const ex = el(`<button class="zoomer" aria-label="Open figure full screen">${I.expand}</button>`);
-    f.appendChild(ex);
-    f.onclick = () => openLightbox(s.fig, { title: s.title, caption: s.cap ? `<b style="color:#2fd3bf">What to notice:</b> ${s.cap}` : '', only: s.figLabels });
+    f.appendChild(el(`<button class="zoomer" aria-label="Open figure full screen">${I.expand}</button>`));
+    f.onclick = () => openLightbox(F.k, { title: F.title || s.title, caption: F.cap ? `<b style="color:#2fd3bf">What to notice:</b> ${F.cap}` : '', only: F.only, labels: F.labels });
     fg.appendChild(f);
-    if (s.cap) fg.appendChild(el(`<figcaption><b>What to notice</b>${s.cap}</figcaption>`));
-    content.appendChild(fg);
-  }
+    if (F.cap) fg.appendChild(el(`<figcaption><b>What to notice</b>${F.cap}</figcaption>`));
+    fgrid.appendChild(fg);
+  });
+  if (figs.length) content.appendChild(fgrid);
+  if (s.link) content.appendChild(el(`<a class="btn small" style="justify-self:start" href="${s.link.href}" target="_blank" rel="noopener">${I.play} ${esc(s.link.t)}</a>`));
   if (s.hook) content.appendChild(el(`<div class="callout hook"><span class="h">Memory hook</span><div>${s.hook}</div></div>`));
   if (s.flag) content.appendChild(el(`<div class="callout flag"><span class="h">⚑ Flag: notes vs standard references</span><div>${s.flag}</div></div>`));
   if (s.beyond) content.appendChild(el(`<div class="callout beyond"><span class="h">Beyond your notes</span><div>${s.beyond}</div></div>`));
@@ -531,6 +535,8 @@ function buildSearch() {
     (c.flash || []).forEach(f => SEARCH.push({ kind: 'Flashcard', title: strip(f.f), text: strip(f.b), where: `Module ${m.n} · flashcards`, go: () => go('cards') }));
     (c.hooks || []).forEach(h => SEARCH.push({ kind: 'Memory hook', title: h.t, text: h.d, where: `Module ${m.n} · hooks`, go: () => openModule(m.id, flow.findIndex(f => f.t === 'hooks')) }));
   });
+  ENTITIES.forEach(e => SEARCH.push({ kind: e.ty === 'Drug' ? 'Drug / treatment' : e.ty, title: e.n + ' · ' + e.ar, text: strip(e.def + ' ' + (e.find || '') + ' ' + (e.care || '')), where: `Entity hub · Module ${modById(e.mid).n}`, go: () => go('hub') }));
+  NUMBERS.forEach(n => SEARCH.push({ kind: 'Number', title: n.q + ': ' + n.a, text: 'Source ' + n.src, where: `Numbers drill · Module ${modById(n.mid).n}`, go: () => go('numbers') }));
   const seen = new Set();
   SEARCH = SEARCH.filter(x => { const k = x.kind + x.title; if (seen.has(k)) return false; seen.add(k); return true; });
 }

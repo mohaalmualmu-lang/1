@@ -13,7 +13,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
-JS = ["core.js", "ix.js", "quiz.js", "views.js", "main.js"]
+JS = ["core.js", "ix.js", "ix2.js", "quiz.js", "views.js", "tools.js", "main.js"]
 
 
 def main():
@@ -25,6 +25,7 @@ def main():
         imgs[p.stem] = "data:image/webp;base64," + base64.b64encode(p.read_bytes()).decode()
     content = [(SRC / "content" / "modules.js").read_text()]
     content += [p.read_text() for p in sorted((SRC / "content").glob("m*.js")) if p.name != "modules.js"]
+    content.append((SRC / "content" / "tools.js").read_text())
     js = [(SRC / "js" / n).read_text() for n in JS]
     out = "\n".join([
         head.strip(),

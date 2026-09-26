@@ -29,20 +29,25 @@ function renderQ(q, host, opts = {}) {
   });
   function answer(i, b) {
     const ok = i === 0;
+    if (opts.quiet) {
+      btns.forEach(x => x.disabled = true); b.classList.add('picked'); sfx.tap();
+      recordQ(q.id, ok); opts.onAnswer && opts.onAnswer(ok, i); return;
+    }
     btns.forEach((x, pos) => { x.disabled = true; const oi = order[pos]; if (oi === 0) x.classList.add('right'); else if (x !== b) x.classList.add('dim'); });
     if (!ok) b.classList.add('wrong');
     ok ? sfx.ok() : sfx.bad();
     recordQ(q.id, ok);
-    const trapI = q.trap ? q.trap[0] : null;
+    const hasTrap = q.trap && q.trap[0] > 0 && q.trap[1];
+    const trapI = hasTrap ? q.trap[0] : null;
     const trapTxt = trapI != null ? q.opts[trapI] : null;
     const fb = $('.fb', root);
     fb.appendChild(el(`<div class="verdict ${ok ? 'good' : 'bad'}">${ok ? I.check : I.x}<span>${ok ? 'Correct' : 'Not quite'}</span></div>`));
     fb.appendChild(el(`<div class="callout why" style="margin-top:10px"><span class="h">Why “${strip(q.opts[0])}” is right</span><div>${q.why}</div></div>`));
-    if (q.trap) fb.appendChild(el(`<div class="callout flag" style="margin-top:8px"><span class="h">${!ok && i === trapI ? 'Why your pick is wrong' : 'The tempting wrong answer'}: “${strip(trapTxt)}”</span><div>${q.trap[1]}</div></div>`));
+    if (hasTrap) fb.appendChild(el(`<div class="callout flag" style="margin-top:8px"><span class="h">${!ok && i === trapI ? 'Why your pick is wrong' : 'The tempting wrong answer'}: “${strip(trapTxt)}”</span><div>${q.trap[1]}</div></div>`));
     if (!ok && i !== trapI && q.opts[i]) fb.appendChild(el(`<p class="muted" style="font-size:13.5px;margin-top:8px">You picked “${strip(q.opts[i])}”. It does not fit: re-read the explanation above.</p>`));
     if (q.flag) fb.appendChild(el(`<div class="callout beyond" style="margin-top:8px"><span class="h">⚑ Flag</span><div>${q.flag}</div></div>`));
     if (q.src) fb.appendChild(el(`<div class="src" style="margin-top:8px">Source: ${esc(q.src)}</div>`));
-    opts.onAnswer && opts.onAnswer(ok);
+    opts.onAnswer && opts.onAnswer(ok, i);
   }
   host.appendChild(root);
   return root;

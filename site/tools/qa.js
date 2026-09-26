@@ -8,6 +8,7 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const RESET = ':root{color-scheme:light;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui;background:#fafafa}img{max-width:100%}[hidden]{display:none!important}';
+let LAST = '';
 const shotsDir = process.argv.includes('--shots') ? process.argv[process.argv.indexOf('--shots') + 1] : null;
 
 function harness() {
@@ -27,14 +28,15 @@ async function overflow(page) {
   });
 }
 
-async function run(theme) {
-  const browser = await chromium.launch();
-  const ctx = await browser.newContext({ viewport: { width: 360, height: 740 }, colorScheme: theme, deviceScaleFactor: 2 });
+async function run(theme, OUT) {
+  const browser = await chromium.launch({ args: ['--ignore-gpu-blocklist', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+  const ctx = await browser.newContext({ viewport: { width: 360, height: 740 }, colorScheme: theme, deviceScaleFactor: 2, ignoreHTTPSErrors: true });
+  if (process.env.THREE_JS) await ctx.route('**/three.min.js', r => r.fulfill({ path: process.env.THREE_JS, contentType: 'application/javascript' }));
   const page = await ctx.newPage();
-  const errors = [];
-  page.on('console', m => { if (m.type() === 'error' && !/fonts\.(googleapis|gstatic)/.test(m.text()) && !/ERR_(NAME|INTERNET|TUNNEL|CONNECTION|PROXY|CERT)/.test(m.text())) errors.push('console: ' + m.text()); });
+  const errors = OUT.errors;
+  page.on('console', m => { if (m.type() === 'error' && !/fonts\.(googleapis|gstatic)/.test(m.text()) && !/ERR_(NAME|INTERNET|TUNNEL|CONNECTION|PROXY|CERT|TOO_MANY)/.test(m.text())) errors.push('console: ' + m.text()); });
   page.on('pageerror', e => errors.push('pageerror: ' + e.message));
-  const issues = [];
+  const issues = OUT.issues;
   let n = 0;
   const shot = async (name) => { if (shotsDir) await page.screenshot({ path: path.join(shotsDir, `${theme}-${String(++n).padStart(2, '0')}-${name}.png`), fullPage: false }); };
   const checkOverflow = async (where) => { const o = await overflow(page); if (o) issues.push(`[${theme}] overflow at ${where}: ${JSON.stringify(o)}`); };
@@ -50,14 +52,15 @@ async function run(theme) {
     for (let i = 0; i < total; i++) {
       await page.waitForSelector('.step');
       const st = await page.evaluate(id => { const s = flowOf(id)[prog(id).at]; return { t: s.t, kind: s.kind, id: s.id, spec: s.spec || null, q: s.q ? { id: s.q.id, type: s.q.type } : null }; }, mid);
-      const where = `${mid} step ${i + 1}/${total} (${st.t}${st.kind ? ':' + st.kind : ''})`;
+      const where = `${mid} step ${i + 1}/${total} (${st.t}${st.kind ? ':' + st.kind : ''})`; LAST = where;
+      try {
       // reveal predicts
       for (const b of await page.$$('.predict button')) await b.click();
       if (st.t === 'card') {
         const fig = await page.$('.step .fig');
         if (fig) {
           await fig.click(); await page.waitForSelector('.lb'); await checkOverflow(where + ' lightbox');
-          if (i < 12) await shot(`${mid}-lightbox-${i}`);
+          
           await page.click('.lb [data-x]');
         }
       }
@@ -72,7 +75,7 @@ async function run(theme) {
             await page.click(`.ix .pin.dot[data-id="${id}"]`, { force: true });
           }
         } else if (st.kind === 'order') {
-          for (const id of st.spec.items) { await page.click(`.ix .tray .chipbtn[data-id="${id}"]`); await page.waitForTimeout(60); }
+          for (const it of st.spec.items) { const id = typeof it === "object" ? it.id : it; await page.click(`.ix .tray .chipbtn[data-id="${id}"]`); await page.waitForTimeout(60); }
           await page.waitForTimeout(1200);
         } else if (st.kind === 'sort') {
           for (let g = 0; g < 30; g++) {
@@ -85,9 +88,49 @@ async function run(theme) {
           const L = await page.$$eval('.ix .L button', bs => bs.map(b => b.dataset.i));
           for (const i2 of L) { await page.click(`.ix .L button[data-i="${i2}"]`); await page.click(`.ix .R button[data-i="${i2}"]`); }
         }
-        const won = await page.$('.ix .win');
-        if (!won) issues.push(`[${theme}] interactive not completed: ${where}`);
-        await shot(`${mid}-ix-${st.id}`);
+        else if (st.kind === 'aki') {
+          for (const k of ['pre', 'intra', 'post']) await page.click(`.aki [data-m="${k}"]`);
+        } else if (st.kind === 'foley') {
+          for (const a of ['bag', 'bag', 'kink', 'kink', 'remove', 'deflate', 'remove']) await page.click(`.foley [data-a="${a}"]`);
+        } else if (st.kind === 'dialysis') {
+          for (const b of await page.$$('.dial .probs .chipbtn')) await b.click();
+        } else if (st.kind === 'uo') {
+          for (const v of [60, 10, 0]) await page.$eval('.ix [data-o]', (e, v) => { e.value = v; e.dispatchEvent(new Event('input')); }, v);
+        } else if (st.kind === 'ecg') {
+          await page.$eval('.ecgsim input[type=range]', e => { e.value = 80; e.dispatchEvent(new Event('input')); });
+          await page.waitForTimeout(400);
+          for (const t of ['ecg', 'ca', 'ins', 'bic']) await page.click(`.ecgsim [data-t="${t}"]`);
+          await page.waitForTimeout(300);
+        } else if (st.kind === 'torsion3d') {
+          await page.waitForTimeout(1500);
+          await page.$eval('.ctrl3d input', e => { e.value = 360; e.dispatchEvent(new Event('input')); });
+          const fb = await page.$('.stage3d .fallback:not([hidden])');
+          if (fb) issues.push(`[${theme}] 3D fallback shown (three.js not loaded) at ${where}`);
+        } else if (st.kind === 'kidney3d') {
+          await page.waitForTimeout(2000);
+          const fb = await page.$('.stage3d .fallback:not([hidden])');
+          const cv = await page.$('.stage3d canvas');
+          if (fb || !cv) issues.push(`[${theme}] 3D kidney did not render at ${where}`);
+          if (st.spec.stone && cv) { await page.click('[data-drop]'); await page.waitForTimeout(3600); }
+        } else if (st.kind === 'triage') {
+          const correct = st.spec.cases.map(c => c.opts[0]);
+          for (let g = 0; g < 40; g++) {
+            if (await page.$('.ix .win')) break;
+            const opts = await page.$$('.ix .opt:not([disabled])');
+            let clicked = false;
+            for (const o of opts) { const t = await o.$eval('span:last-child', e => e.innerHTML); if (correct.includes(t)) { await o.click(); clicked = true; break; } }
+            if (!clicked) { issues.push(`[${theme}] triage: no correct option found at ${where}`); break; }
+            const nb = await page.$('.ix .btn.primary.small'); if (nb) await nb.click();
+          }
+        } else if (st.kind === 'regions') {
+          for (let g = 0; g < 12; g++) { const t = await page.$eval('.ix .find span', e => e.textContent); if (t.startsWith('All')) break; await page.click(`.grid9 button[aria-label="${t}"]`); }
+        } else if (st.kind === 'compare') {
+          for (let g = 0; g < 8; g++) { const t = await page.$eval('.ix .find span', e => e.textContent); const r = st.spec.rounds.find(x => x.q === t); if (!r) break; await (await page.$$('.pcard'))[r.ans === 'a' ? 0 : 1].click(); }
+        }
+        await page.waitForTimeout(150);
+        const won = await page.evaluate(([m, id]) => !!prog(m).ix[id], [mid, st.id]);
+        if (!won && !['kidney3d'].includes(st.kind)) issues.push(`[${theme}] interactive not completed: ${where}`);
+        if (['kidney3d', 'torsion3d', 'ecg', 'aki', 'foley', 'dialysis'].includes(st.kind)) await shot(`${mid}-ix-${st.id}`);
       }
       if (st.t === 'q') {
         if (st.q.type === 'sa') {
@@ -105,7 +148,7 @@ async function run(theme) {
           }, [st.q.id, want]);
           await btns[idx].click();
         }
-        if (i < 16) await shot(`${mid}-q-${st.q.id}`);
+        if (mid === 'm1' && i < 8) await shot(`${mid}-q-${st.q.id}`);
       }
       if (st.t === 'lockin') {
         for (let g = 0; g < 40; g++) {
@@ -125,16 +168,17 @@ async function run(theme) {
           if (!nb) break;
           await nb.click();
         }
-        await shot(`${mid}-lockin`);
+        
       }
       if (st.t === 'recall') {
         const revs = await page.$$('.rc [data-rev]');
         for (const r of revs) await r.click();
         const miss = await page.$('.rc .again'); if (miss) await miss.click();
         const gots = await page.$$('.rc .got'); for (const g of gots) await g.click();
-        await shot(`${mid}-recall`);
+        
       }
-      if (st.t === 'hooks' || st.t === 'done' || st.t === 'intro') await shot(`${mid}-${st.t}`);
+      if (st.t === 'intro') await shot(`${mid}-${st.t}`);
+      } catch (err) { issues.push(`[${theme}] EXCEPTION at ${where}: ${err.message.split('\n')[0]}`); await shot('err-' + mid + '-' + i); }
       await checkOverflow(where);
       const dis = await page.$eval('[data-next]', b => b.disabled);
       if (dis) { issues.push(`[${theme}] continue disabled at ${where}`); break; }
@@ -142,11 +186,26 @@ async function run(theme) {
     }
   }
   // tools
-  for (const v of ['cards', 'search', 'mistakes', 'settings', 'more', 'learn']) {
+  for (const v of ['cards', 'search', 'mistakes', 'settings', 'more', 'learn', 'exam', 'numbers', 'cheat', 'hub', 'lab']) {
     await page.evaluate(v => go(v), v);
     if (v === 'search') { await page.fill('#q-search', 'pelvis'); await page.waitForTimeout(100); const n2 = await page.$$eval('.res', r => r.length); if (!n2) issues.push(`[${theme}] search found nothing for "pelvis"`); }
     await checkOverflow(v); await shot(v);
   }
+  // exam: quick 10-question end-feedback run
+  await page.evaluate(() => go('exam'));
+  await page.click('.seg[data-k="len"] button[data-v="10"]');
+  await page.click('[data-go]');
+  for (let g = 0; g < 12; g++) { const o = await page.$('.opt:not([disabled])'); if (!o) break; await o.click(); await page.waitForTimeout(450); }
+  await page.waitForTimeout(300); await checkOverflow('exam results'); await shot('exam-results');
+  await page.evaluate(() => go('numbers'));
+  for (let g = 0; g < 3; g++) { await (await page.$$('.opt'))[0].click(); await page.click('.btn.primary'); }
+  await page.evaluate(() => go('hub')); await page.click('[data-quiz]');
+  for (let g = 0; g < 3; g++) { await (await page.$$('.opt'))[0].click(); await page.click('.btn.primary.small'); }
+  await page.evaluate(() => go('lab', { tab: 'quiz' }));
+  for (let g = 0; g < 3; g++) { await (await page.$$('.opt'))[0].click(); await page.click('.btn.primary.small'); }
+  await shot('lab-quiz');
+  await page.evaluate(() => go('lab', { tab: 'ix' })); await shot('lab-ix');
+  await page.evaluate(() => go('cheat')); await page.fill('#q-cheat', 'dialysis'); await shot('cheat-filter');
   await page.evaluate(() => go('cards', { start: true }));
   for (let k = 0; k < 4; k++) { await page.click('.fc'); await page.waitForTimeout(80); await page.click(k % 2 ? '.fcbtns .got' : '.fcbtns .again'); }
   await shot('cards-session');
@@ -160,7 +219,8 @@ async function run(theme) {
   if (shotsDir) fs.mkdirSync(shotsDir, { recursive: true });
   let fail = 0;
   for (const theme of ['dark', 'light']) {
-    const { errors, issues } = await run(theme);
+    const OUT = { errors: [], issues: [] }; const { errors, issues } = OUT;
+    try { await run(theme, OUT); } catch (e) { issues.push('CRASH after ' + LAST + ': ' + e.message.split('\n')[0]); }
     console.log(`== ${theme}: ${errors.length} errors, ${issues.length} issues`);
     [...errors, ...issues].forEach(x => console.log('  ' + x));
     fail += errors.length + issues.length;

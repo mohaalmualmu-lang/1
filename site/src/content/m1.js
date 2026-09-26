@@ -91,6 +91,7 @@ CONTENT.m1 = {
         'The <k>renal hilum</k> is the notch where the <k>renal artery</k>, <k>renal vein</k> and ureter enter or leave. The central <k>renal sinus</k> holds the pelvis and calyces. One pyramid plus the cortex over it is a <k>renal lobe</k>.'],
       beyond: 'Your slide labels these parts but does not define them. The one-line roles here are standard anatomy.' },
     { t: 'ix', id: 'm1x4', kind: 'label', title: 'Label the kidney map', intro: '12 structures. Use the zoom button if the dots feel small.', spec: { fig: 'kidney_map' } },
+    { t: 'ix', id: 'm1x11', kind: 'kidney3d', title: '3D kidney: cut it open', intro: 'Drag to rotate, pinch to zoom, and slide “Cut open” to slice the kidney. Then tap each part as it is named.', spec: {} },
     { t: 'q', q: { id: 'm1q11', lv: 'U', src: 'B9 (figure)', stem: 'On the kidney figure, the renal artery, renal vein and ureter all pass through the:',
       opts: ['Renal hilum', 'Renal sinus', 'Renal papilla', 'Renal column'],
       why: 'The hilum is the notch on the kidney’s inner border where vessels and the ureter enter and leave.',

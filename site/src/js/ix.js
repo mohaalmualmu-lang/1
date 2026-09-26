@@ -11,13 +11,13 @@ function winBar(text, again) {
 }
 function zoomable(fig) {
   const wrap = el('<div class="figwrap"></div>');
-  wrap.appendChild(fig);
-  const z = el(`<button class="zoomer" aria-label="Zoom figure">${I.zoom}</button>`);
-  z.onclick = e => { e.stopPropagation(); wrap.classList.toggle('zoomed'); };
-  fig.appendChild(z);
+  const sc = el('<div class="figscroll"></div>');
+  sc.appendChild(fig); wrap.appendChild(sc);
+  const z = el(`<button class="btn small ghost zoombtn" aria-pressed="false">${I.zoom} Zoom</button>`);
+  z.onclick = e => { e.stopPropagation(); const on = !wrap.classList.contains('zoomed'); wrap.classList.toggle('zoomed', on); z.setAttribute('aria-pressed', on); z.innerHTML = `${I.zoom} ${on ? 'Fit' : 'Zoom'}`; };
+  wrap.appendChild(z);
   return wrap;
 }
-
 /* Tap-to-label: find each structure on the figure */
 IX.label = function (spec, host, done) {
   const f = FIGS[spec.fig];
@@ -105,9 +105,9 @@ IX.label = function (spec, host, done) {
 
 /* Order on the figure: pick each station in sequence; a drop travels the route */
 IX.order = function (spec, host, done) {
-  const f = FIGS[spec.fig];
+  const f = spec.fig ? FIGS[spec.fig] : null;
   const path = spec.path ? f.paths[spec.path] : null;
-  const items = spec.items.map(id => labelById(spec.fig, id) || { id, en: id, ar: '' });
+  const items = spec.items.map(id => typeof id === 'object' ? id : (f && labelById(spec.fig, id)) || { id, en: id, ar: '' });
   let k, errors, chips, drop, at;
   const root = el(`<div class="ix">
     <div class="prompt"><div class="find"><small>${esc(spec.promptSmall || 'Build the route')}</small><span>${esc(spec.prompt || 'Tap the stations in order')}</span></div><span class="score"></span></div>
@@ -115,8 +115,8 @@ IX.order = function (spec, host, done) {
     <ol class="seq"></ol>
     <div class="tray"></div><div class="after"></div></div>`);
   host.appendChild(root);
-  const fig = figureEl(spec.fig, { labels: !!spec.showOtherLabels, only: spec.showOtherLabels });
-  $('.figslot', root).appendChild(zoomable(fig));
+  const fig = f ? figureEl(spec.fig, { labels: !!spec.showOtherLabels, only: spec.showOtherLabels }) : el('<div></div>');
+  if (f) $('.figslot', root).appendChild(zoomable(fig));
   function pt(i) { const p = path[i].pt; return { left: p[0] + '%', top: p[1] + '%' }; }
   function stopIndex(id) { return path ? path.findIndex(p => p.stop === id) : -1; }
   function travel(toIdx, cb) {
@@ -149,7 +149,7 @@ IX.order = function (spec, host, done) {
     if (it.id === items[k].id) {
       sfx.ok(); b.classList.add('done');
       const li = $$('.seq li', root)[k]; li.classList.add('on'); li.textContent = it.en;
-      if (it.box) { const p = pinEl(it, S.set.arLabels); p.classList.add('ok'); fig.appendChild(p); }
+      if (it.box && f) { const p = pinEl(it, S.set.arLabels); p.classList.add('ok'); fig.appendChild(p); }
       k++; $('.score', root).textContent = `${k}/${items.length}`;
       const si = stopIndex(it.id);
       if (si >= 0) travel(si);
