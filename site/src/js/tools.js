@@ -287,7 +287,8 @@ VIEWS.lab = (app, params) => {
       MODULES.forEach(x => { const c = CONTENT[x.id]; if (!c) return; const flow = flowOf(x.id);
         c.steps.forEach((s, i) => { if (s.t !== 'ix') return;
           const ic = s.kind.includes('3d') ? I.hub : s.kind === 'ecg' ? I.drill : s.kind === 'triage' ? I.mistake : I.spark;
-          const b = el(`<button><div class="th ix">${ic}</div><b>${esc(s.title)}</b><span class="src" style="padding:0 4px 4px">${esc(IX_NAMES[s.kind] || s.kind)} · M${x.n}</span></button>`);
+          const thumb = s.spec && s.spec.fig && IMG[s.spec.fig] ? `<div class="th"><img src="${IMG[s.spec.fig]}" alt="" loading="lazy"></div>` : s.spec && s.spec.a ? `<div class="th"><img src="${IMG[s.spec.a.img]}" alt="" loading="lazy"></div>` : `<div class="th ix">${ic}</div>`;
+          const b = el(`<button>${thumb}<b>${esc(s.title)}</b><span class="src" style="padding:0 4px 4px">${esc(IX_NAMES[s.kind] || s.kind)} · M${x.n}</span></button>`);
           b.onclick = () => openModule(x.id, flow.findIndex(f => f._i === i));
           g.appendChild(b);
         }); });

@@ -18,7 +18,7 @@ function loadThree() {
 /* shared 3D stage: renderer, camera, drag-rotate, pinch/wheel zoom, tap-pick, lifecycle */
 function stage3d(host, opts, build) {
   const box = el(`<div class="stage3d"><div class="cv"></div>
-    <div class="hud"><span class="hint">Drag to rotate · pinch to zoom · tap a part</span></div>
+    <div class="hud"><span class="hint">Drag · pinch · tap a part</span></div>
     <div class="pick" aria-live="polite" hidden></div>
     <div class="fallback" hidden></div></div>`);
   host.appendChild(box);
@@ -473,7 +473,7 @@ IX.foley = function (spec, host, done) {
     <div class="foleysvg"><svg viewBox="0 0 340 260" role="img" aria-label="Bladder with Foley catheter draining into a bag">
       <ellipse cx="110" cy="70" rx="62" ry="46" fill="#f0c9bd" stroke="#c37f70" stroke-width="2.5"/>
       <ellipse class="urine" cx="110" cy="84" rx="50" ry="26" fill="#f5d77a" opacity=".85"/>
-      <text x="110" y="30" text-anchor="middle" class="lb">Bladder</text>
+      <text x="110" y="16" text-anchor="middle" class="lb">Bladder</text>
       <circle class="balloon" cx="110" cy="108" r="11" fill="#9fd6ff" stroke="#3a8fd0" stroke-width="2"/>
       <path class="tube" d="M110 112 L110 160 C110 190 150 200 262 172"/>
       <path class="tflow" d="M110 112 L110 160 C110 190 150 200 262 172"/>
