@@ -1,0 +1,995 @@
+{
+ "urinary_system": {
+  "src": "urinary_system.jpeg",
+  "w": 900,
+  "credit": "Slides A4 / B5",
+  "labels": [
+   {
+    "id": "kidneys",
+    "en": "Kidneys",
+    "ar": "الكليتان",
+    "box": [
+     71,
+     14.5,
+     86.5,
+     21
+    ],
+    "note": "Filter the blood and form urine."
+   },
+   {
+    "id": "ureters",
+    "en": "Ureters",
+    "ar": "الحالبان",
+    "box": [
+     71,
+     41,
+     85.5,
+     47.5
+    ],
+    "note": "Carry urine from each kidney down to the bladder."
+   },
+   {
+    "id": "bladder",
+    "en": "Urinary bladder",
+    "ar": "المثانة البولية",
+    "box": [
+     71,
+     69.5,
+     100,
+     76.5
+    ],
+    "note": "Stores urine."
+   },
+   {
+    "id": "urethra",
+    "en": "Urethra",
+    "ar": "الإحليل",
+    "box": [
+     71,
+     83.5,
+     86,
+     90.5
+    ],
+    "note": "Carries urine out. Shorter in females than males."
+   }
+  ]
+ },
+ "kidney_regions": {
+  "src": "kidney_regions.jpeg",
+  "w": 900,
+  "credit": "Slides A5 / B6",
+  "labels": [
+   {
+    "id": "minor_calyx",
+    "en": "Minor calyx",
+    "ar": "الكأس الصغرى",
+    "box": [
+     57.3,
+     0,
+     78.8,
+     6.2
+    ],
+    "note": "First cup that collects urine from a pyramid tip."
+   },
+   {
+    "id": "major_calyx",
+    "en": "Major calyx",
+    "ar": "الكأس الكبرى",
+    "box": [
+     65.5,
+     7.6,
+     87,
+     14.2
+    ],
+    "note": "Several minor calyces join into a major calyx."
+   },
+   {
+    "id": "medulla",
+    "en": "Renal medulla",
+    "ar": "لب الكلية",
+    "box": [
+     73.3,
+     35.2,
+     100,
+     42
+    ],
+    "note": "Middle region, made of the renal pyramids."
+   },
+   {
+    "id": "cortex",
+    "en": "Renal cortex",
+    "ar": "قشرة الكلية",
+    "box": [
+     74.6,
+     51.6,
+     98.4,
+     58.4
+    ],
+    "note": "Outer region. Your notes place the nephrons here."
+   },
+   {
+    "id": "pelvis",
+    "en": "Renal pelvis",
+    "ar": "حوض الكلية",
+    "box": [
+     0,
+     48.6,
+     23,
+     55.4
+    ],
+    "note": "Inner funnel that drains into the ureter. Kidney stones originate here."
+   }
+  ]
+ },
+ "kidney_map": {
+  "src": "kidney_map.jpeg",
+  "w": 1100,
+  "credit": "Slide B9",
+  "labels": [
+   {
+    "id": "nephron",
+    "en": "Nephron",
+    "ar": "النفرون",
+    "box": [
+     27.8,
+     5.8,
+     35.4,
+     9.8
+    ],
+    "note": "The unit that forms urine."
+   },
+   {
+    "id": "hilum",
+    "en": "Renal hilum",
+    "ar": "سُرّة الكلية",
+    "box": [
+     22.6,
+     13.8,
+     28.2,
+     20.4
+    ],
+    "note": "Notch where the renal artery, renal vein and ureter enter or leave."
+   },
+   {
+    "id": "cortex",
+    "en": "Renal cortex",
+    "ar": "قشرة الكلية",
+    "box": [
+     0.4,
+     45.8,
+     12.2,
+     49.6
+    ],
+    "note": "Outer layer."
+   },
+   {
+    "id": "medulla",
+    "en": "Renal medulla",
+    "ar": "لب الكلية",
+    "box": [
+     0.4,
+     51.8,
+     13.7,
+     55.6
+    ],
+    "note": "Middle layer, built from pyramids."
+   },
+   {
+    "id": "column",
+    "en": "Renal column",
+    "ar": "العمود الكلوي",
+    "box": [
+     2.6,
+     57.8,
+     14.5,
+     61.6
+    ],
+    "note": "Strip of cortex tissue that dips between two pyramids."
+   },
+   {
+    "id": "pyramid",
+    "en": "Renal pyramid",
+    "ar": "الهرم الكلوي",
+    "box": [
+     2.6,
+     63.2,
+     15,
+     66.8
+    ],
+    "note": "Cone-shaped block of medulla."
+   },
+   {
+    "id": "papilla",
+    "en": "Renal papilla",
+    "ar": "الحليمة الكلوية",
+    "box": [
+     2.6,
+     68.3,
+     14,
+     72
+    ],
+    "note": "Tip of a pyramid; urine drips from here into a minor calyx."
+   },
+   {
+    "id": "sinus",
+    "en": "Renal sinus",
+    "ar": "الجيب الكلوي",
+    "box": [
+     0.4,
+     78.1,
+     10.7,
+     81.8
+    ],
+    "note": "Central space holding the pelvis, calyces, vessels and fat."
+   },
+   {
+    "id": "capsule",
+    "en": "Renal capsule",
+    "ar": "محفظة الكلية",
+    "box": [
+     0.4,
+     91.3,
+     12.7,
+     95
+    ],
+    "note": "Tough outer covering of the kidney."
+   },
+   {
+    "id": "lobe",
+    "en": "Renal lobe",
+    "ar": "الفص الكلوي",
+    "box": [
+     49.6,
+     81.4,
+     59.2,
+     85.6
+    ],
+    "note": "One pyramid plus the cortex over it."
+   },
+   {
+    "id": "artery",
+    "en": "Renal artery",
+    "ar": "الشريان الكلوي",
+    "box": [
+     69.8,
+     41.3,
+     80.7,
+     45
+    ],
+    "note": "Brings blood in to be filtered."
+   },
+   {
+    "id": "vein",
+    "en": "Renal vein",
+    "ar": "الوريد الكلوي",
+    "box": [
+     69.8,
+     49.3,
+     79.7,
+     53.2
+    ],
+    "note": "Returns filtered blood to the body."
+   },
+   {
+    "id": "p_cd",
+    "en": "Collecting duct",
+    "ar": "القناة الجامعة",
+    "box": [
+     82.3,
+     9.8,
+     95.2,
+     13.4
+    ],
+    "path": true
+   },
+   {
+    "id": "p_pd",
+    "en": "Papillary duct",
+    "ar": "القناة الحليمية",
+    "box": [
+     82.3,
+     18.3,
+     94.2,
+     22
+    ],
+    "path": true
+   },
+   {
+    "id": "p_mi",
+    "en": "Minor calyx",
+    "ar": "الكأس الصغرى",
+    "box": [
+     83.6,
+     27.3,
+     93.7,
+     31
+    ],
+    "path": true
+   },
+   {
+    "id": "p_ma",
+    "en": "Major calyx",
+    "ar": "الكأس الكبرى",
+    "box": [
+     83.6,
+     39.3,
+     93.7,
+     43
+    ],
+    "path": true
+   },
+   {
+    "id": "p_pe",
+    "en": "Renal pelvis",
+    "ar": "حوض الكلية",
+    "box": [
+     83.3,
+     46.3,
+     94.2,
+     50.2
+    ],
+    "path": true
+   },
+   {
+    "id": "p_ur",
+    "en": "Ureter",
+    "ar": "الحالب",
+    "box": [
+     85.6,
+     80.3,
+     91.7,
+     84.2
+    ],
+    "path": true
+   },
+   {
+    "id": "p_bl",
+    "en": "Urinary bladder",
+    "ar": "المثانة البولية",
+    "box": [
+     82.1,
+     95.1,
+     95.2,
+     99
+    ],
+    "path": true
+   }
+  ],
+  "paths": {
+   "urine": [
+    {
+     "stop": "p_cd",
+     "pt": [
+      57.5,
+      17
+     ]
+    },
+    {
+     "stop": "p_pd",
+     "pt": [
+      56,
+      23.5
+     ]
+    },
+    {
+     "stop": "p_mi",
+     "pt": [
+      55,
+      29
+     ]
+    },
+    {
+     "stop": "p_ma",
+     "pt": [
+      55.2,
+      39.5
+     ]
+    },
+    {
+     "stop": "p_pe",
+     "pt": [
+      60,
+      47.5
+     ]
+    },
+    {
+     "pt": [
+      67,
+      55
+     ]
+    },
+    {
+     "pt": [
+      73.5,
+      68
+     ]
+    },
+    {
+     "stop": "p_ur",
+     "pt": [
+      73,
+      81.5
+     ]
+    },
+    {
+     "stop": "p_bl",
+     "pt": [
+      70.5,
+      97.5
+     ]
+    }
+   ]
+  }
+ },
+ "nephron": {
+  "src": "nephron.jpeg",
+  "w": 1000,
+  "credit": "Slides A6 / B10–B12",
+  "labels": [
+   {
+    "id": "glomerulus",
+    "en": "Glomerulus",
+    "ar": "الكبيبة",
+    "box": [
+     27.8,
+     1.2,
+     38.3,
+     5.4
+    ],
+    "note": "Capillary knot where blood is filtered."
+   },
+   {
+    "id": "bowman",
+    "en": "Bowman capsule",
+    "ar": "محفظة بومان",
+    "box": [
+     49.3,
+     0,
+     57.4,
+     6.3
+    ],
+    "note": "Cup around the glomerulus that catches the filtrate."
+   },
+   {
+    "id": "dct",
+    "en": "Distal convoluted tubule",
+    "ar": "النبيب الملتوي البعيد",
+    "box": [
+     58.1,
+     0,
+     72.8,
+     6.3
+    ],
+    "note": "Last twisted tubule before the collecting duct.",
+    "short": "DCT"
+   },
+   {
+    "id": "afferent",
+    "en": "Afferent arteriole",
+    "ar": "الشُرَيّن الوارد",
+    "box": [
+     16.3,
+     6.3,
+     30.7,
+     10.2
+    ],
+    "note": "Brings blood INTO the glomerulus."
+   },
+   {
+    "id": "efferent",
+    "en": "Efferent arteriole",
+    "ar": "الشُرَيّن الصادر",
+    "box": [
+     15.6,
+     21.2,
+     30,
+     25.2
+    ],
+    "note": "Carries blood OUT of the glomerulus."
+   },
+   {
+    "id": "pct",
+    "en": "Proximal convoluted tubule",
+    "ar": "النبيب الملتوي القريب",
+    "box": [
+     25.1,
+     29.8,
+     42.2,
+     36.2
+    ],
+    "note": "First twisted tubule after Bowman capsule.",
+    "short": "PCT"
+   },
+   {
+    "id": "macula",
+    "en": "Macula densa",
+    "ar": "البقعة الكثيفة",
+    "box": [
+     70.3,
+     22.3,
+     77.2,
+     28.7
+    ],
+    "note": "Patch of tubule cells where the DCT touches the arterioles."
+   },
+   {
+    "id": "cd",
+    "en": "Collecting duct",
+    "ar": "القناة الجامعة",
+    "box": [
+     85.1,
+     21.8,
+     94.2,
+     28.2
+    ],
+    "note": "Many nephrons drain into it; it carries urine toward the papilla."
+   },
+   {
+    "id": "cortex",
+    "en": "Cortex",
+    "ar": "القشرة",
+    "box": [
+     86.6,
+     34.8,
+     93.2,
+     38.4
+    ],
+    "note": "Glomerulus, capsule, PCT and DCT sit here."
+   },
+   {
+    "id": "medulla",
+    "en": "Medulla",
+    "ar": "اللب",
+    "box": [
+     86.6,
+     69.6,
+     94.2,
+     73.4
+    ],
+    "note": "The loop of Henle dips down into here."
+   },
+   {
+    "id": "cmj",
+    "en": "Corticomedullary junction",
+    "ar": "الوصل القشري اللبي",
+    "box": [
+     0,
+     41.3,
+     8.5,
+     50.2
+    ],
+    "note": "Border between cortex and medulla.",
+    "short": "Cortico-medullary junction"
+   },
+   {
+    "id": "desc",
+    "en": "Descending limb",
+    "ar": "الطرف النازل",
+    "box": [
+     37.3,
+     62.3,
+     47.5,
+     68.7
+    ],
+    "note": "Down-going half of the loop of Henle."
+   },
+   {
+    "id": "asc",
+    "en": "Ascending limb",
+    "ar": "الطرف الصاعد",
+    "box": [
+     66.8,
+     65.3,
+     76,
+     71.7
+    ],
+    "note": "Up-going half of the loop of Henle."
+   },
+   {
+    "id": "vasa",
+    "en": "Vasa recta",
+    "ar": "الأوعية المستقيمة",
+    "box": [
+     36.6,
+     93.6,
+     46.5,
+     99.7
+    ],
+    "note": "Capillaries that run alongside the loop of Henle."
+   },
+   {
+    "id": "loop",
+    "en": "Loop of Henle",
+    "ar": "عروة هنلي",
+    "box": [
+     62.8,
+     96.3,
+     74.7,
+     100
+    ],
+    "note": "U-shaped tubule between the PCT and the DCT."
+   },
+   {
+    "id": "urine",
+    "en": "Urine",
+    "ar": "البول",
+    "box": [
+     75.3,
+     95.3,
+     80.4,
+     98.7
+    ],
+    "note": "Leaves through the collecting duct."
+   },
+   {
+    "id": "vein",
+    "en": "Vein",
+    "ar": "وريد",
+    "box": [
+     0,
+     53.8,
+     4,
+     57.2
+    ],
+    "hide": true
+   },
+   {
+    "id": "artery",
+    "en": "Artery",
+    "ar": "شريان",
+    "box": [
+     0,
+     57.3,
+     5.2,
+     60.7
+    ],
+    "hide": true
+   }
+  ],
+  "paths": {
+   "filtrate": [
+    {
+     "stop": "glomerulus",
+     "pt": [
+      42.5,
+      16.5
+     ]
+    },
+    {
+     "stop": "bowman",
+     "pt": [
+      47.5,
+      20.5
+     ]
+    },
+    {
+     "pt": [
+      51,
+      17
+     ]
+    },
+    {
+     "stop": "pct",
+     "pt": [
+      56,
+      15
+     ]
+    },
+    {
+     "pt": [
+      55.5,
+      45
+     ]
+    },
+    {
+     "pt": [
+      56,
+      80
+     ]
+    },
+    {
+     "stop": "loop",
+     "pt": [
+      57.5,
+      91
+     ]
+    },
+    {
+     "pt": [
+      59.5,
+      75
+     ]
+    },
+    {
+     "pt": [
+      60,
+      40
+     ]
+    },
+    {
+     "stop": "dct",
+     "pt": [
+      66.5,
+      17
+     ]
+    },
+    {
+     "pt": [
+      74,
+      10
+     ]
+    },
+    {
+     "stop": "cd",
+     "pt": [
+      78.5,
+      30
+     ]
+    },
+    {
+     "pt": [
+      78,
+      90
+     ]
+    }
+   ]
+  },
+  "dense": true
+ },
+ "male_gu": {
+  "src": "male_gu.jpeg",
+  "w": 900,
+  "credit": "Slide A8",
+  "labels": [
+   {
+    "id": "sv",
+    "en": "Seminal vesicle",
+    "ar": "الحويصلة المنوية",
+    "box": [
+     18.8,
+     0,
+     28.8,
+     5.5
+    ],
+    "note": "Adds fluid to semen."
+   },
+   {
+    "id": "vas",
+    "en": "Vas deferens",
+    "ar": "الأسهر",
+    "box": [
+     34.1,
+     0,
+     44.5,
+     5.5
+    ],
+    "note": "Carries sperm from the epididymis toward the ejaculatory duct."
+   },
+   {
+    "id": "bladder",
+    "en": "Urinary bladder",
+    "ar": "المثانة البولية",
+    "box": [
+     49.8,
+     0,
+     59,
+     5.5
+    ],
+    "note": "Stores urine; sits right above the prostate."
+   },
+   {
+    "id": "pubic",
+    "en": "Pubic bone",
+    "ar": "عظم العانة",
+    "box": [
+     89.3,
+     31.3,
+     96,
+     37.7
+    ],
+    "note": "Bony landmark in front of the bladder."
+   },
+   {
+    "id": "prostate",
+    "en": "Prostate gland",
+    "ar": "البروستاتا",
+    "box": [
+     89.1,
+     43.8,
+     99,
+     50.2
+    ],
+    "note": "Surrounds the urethra and adds fluid to semen."
+   },
+   {
+    "id": "urethra",
+    "en": "Urethra",
+    "ar": "الإحليل",
+    "box": [
+     89.1,
+     55.3,
+     97.8,
+     58.7
+    ],
+    "note": "Shared exit for urine and semen."
+   },
+   {
+    "id": "penis",
+    "en": "Penis",
+    "ar": "القضيب",
+    "box": [
+     93.1,
+     72.3,
+     100,
+     75.7
+    ],
+    "note": "Contains the urethra."
+   },
+   {
+    "id": "glans",
+    "en": "Glans penis",
+    "ar": "حشفة القضيب",
+    "box": [
+     93.1,
+     79.3,
+     100,
+     85.7
+    ],
+    "note": "Tip of the penis, covered by the foreskin."
+   },
+   {
+    "id": "scrotum",
+    "en": "Scrotum",
+    "ar": "كيس الصفن",
+    "box": [
+     71.6,
+     94.8,
+     81.7,
+     98.7
+    ],
+    "note": "Skin pouch that holds the testes."
+   },
+   {
+    "id": "testis",
+    "en": "Testis",
+    "ar": "الخصية",
+    "box": [
+     59.8,
+     97.3,
+     67,
+     100
+    ],
+    "note": "Creates spermatozoa."
+   },
+   {
+    "id": "epididymis",
+    "en": "Epididymis",
+    "ar": "البربخ",
+    "box": [
+     43,
+     94.8,
+     55.7,
+     98.7
+    ],
+    "note": "Sits on the posterior border of the testis; sperm start their trip here."
+   },
+   {
+    "id": "cowper",
+    "en": "Cowper's gland",
+    "ar": "غدة كوبر",
+    "box": [
+     6.1,
+     77.3,
+     17,
+     83.2
+    ],
+    "note": "Bulbourethral gland; adds fluid to semen."
+   },
+   {
+    "id": "ejac",
+    "en": "Ejaculatory duct",
+    "ar": "القناة القاذفة",
+    "box": [
+     4,
+     67.3,
+     17.2,
+     73.2
+    ],
+    "note": "Passes through the prostate into the urethra."
+   }
+  ],
+  "paths": {
+   "sperm": [
+    {
+     "stop": "epididymis",
+     "pt": [
+      63.5,
+      70
+     ]
+    },
+    {
+     "pt": [
+      62,
+      55
+     ]
+    },
+    {
+     "pt": [
+      63,
+      38
+     ]
+    },
+    {
+     "pt": [
+      55,
+      25
+     ]
+    },
+    {
+     "stop": "vas",
+     "pt": [
+      45,
+      24
+     ]
+    },
+    {
+     "pt": [
+      38.5,
+      33
+     ]
+    },
+    {
+     "pt": [
+      40,
+      45
+     ]
+    },
+    {
+     "stop": "ejac",
+     "pt": [
+      42,
+      50
+     ]
+    },
+    {
+     "pt": [
+      50,
+      57
+     ]
+    },
+    {
+     "pt": [
+      66,
+      58
+     ]
+    },
+    {
+     "stop": "urethra",
+     "pt": [
+      78,
+      64
+     ]
+    },
+    {
+     "pt": [
+      83,
+      78
+     ]
+    },
+    {
+     "stop": "exit",
+     "pt": [
+      87,
+      88
+     ]
+    }
+   ]
+  }
+ },
+ "male_sagittal": {
+  "src": "male_sagittal.jpeg",
+  "w": 800,
+  "credit": "Slide B17 (TeachMeAnatomy)",
+  "labels": []
+ }
+}

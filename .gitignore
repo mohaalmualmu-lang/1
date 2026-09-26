@@ -1,0 +1,3 @@
+.check/
+__pycache__/
+site/dist/_qa.html
