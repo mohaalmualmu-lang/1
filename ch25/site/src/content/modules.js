@@ -71,3 +71,51 @@ function t251(ids) {
     <tbody>${rows.map(r => `<tr><td>${r.head}</td><td class="num" data-l="Normal values">${r.normal.replace(/; /g, ';<br>')}</td><td data-l="Low readings">${r.low}</td><td data-l="High readings">${r.high}</td></tr>`).join('')}</tbody></table></div>
     <p class="tnote">${T251_NOTE} Source: A10 · B11.</p>`;
 }
+
+/* ---------- Table 25-2, verbatim (A12 · B13) ---------- */
+const T252 = [
+  { id: 'wbc', name: 'WBC count', normal: '4,500–10,000 cells/mm³ in adults; 4,500–15,500 cells/mm³ in children; 9,400–34,000 cells/mm³ in infants', low: 'Viral infections, bone marrow diseases or disorders, leukemia, radiation, late-stage AIDS', high: 'Viral and bacterial infections, hemorrhage, traumatic tissue injuries, leukemia, cigarette smoking' },
+  { id: 'neut', name: 'Neutrophils (segmented and unsegmented)', normal: '50%–60%<sup>b</sup>; 2,500–8,000 cells/mm³', low: 'Leukemia, infections, rheumatoid arthritis, vitamin B<sub>12</sub> deficiency, enlarged spleen', high: 'Bacterial infections, tissue breakdown, hemolytic reactions, tumors, MI, surgical stress, cancer' },
+  { id: 'baso', name: 'Basophils (also known as mast cells)', normal: '0.5%–1%<sup>a</sup>; 25–100 cells/mm³', low: 'Allergic reactions, hyperthyroidism, MI, bleeding ulcers, stress', high: 'Certain leukemias, inflammations, allergy, polycythemia, hemolytic anemia' },
+  { id: 'eos', name: 'Eosinophils', normal: '1%–4%<sup>a</sup>; 50–500 cells/mm³', low: 'Mononucleosis, HF, Cushing disease', high: 'Addison disease, tumors, skin infections, allergies' },
+  { id: 'lym', name: 'Lymphocytes', normal: '20%–40%<sup>a</sup>; 1,000–4,000 cells/mm³', low: 'Hodgkin disease, burns, trauma, lupus, Cushing disease, immunodeficiency states', high: 'Numerous bacterial and viral infections, hepatitis, leukemia, toxoplasmosis, Graves disease' },
+  { id: 'mono', name: 'Monocytes', normal: '2%–6%<sup>a</sup>; 100–700 cells/mm³', low: 'Corticosteroid use, infections, rheumatoid arthritis, HIV', high: 'Numerous bacterial and parasitic infections, recovery from acute infections, TB, hematologic disorders' },
+];
+const T252_NOTE = '<sup>a</sup> The normal ranges provided are not intended to be definitive. Each laboratory determines its own values, and normal ranges are method dependent. <sup>b</sup> Percentage of the total WBC count. Example: If the WBC is 5,000, then neutrophils should account for 2,500 to 3,000 of this count. Abbreviations: AIDS, acquired immunodeficiency syndrome; HF, heart failure; HIV, human immunodeficiency virus; MI, myocardial infarction; TB, tuberculosis; WBC, white blood cell.';
+function t252(ids) {
+  const rows = T252.filter(r => !ids || ids.includes(r.id));
+  return `<div class="tblwrap"><table class="t"><caption><span>TABLE 25-2</span>WBC Count and Differential</caption>
+    <thead><tr><th>Name</th><th>Normal Values<sup>a</sup></th><th>Examples of Conditions Associated With Low Readings</th><th>Examples of Conditions Associated With High Readings</th></tr></thead>
+    <tbody>${rows.map(r => `<tr><td>${r.name}</td><td class="num" data-l="Normal values">${r.normal.replace(/; /g, ';<br>')}</td><td data-l="Low readings">${r.low}</td><td data-l="High readings">${r.high}</td></tr>`).join('')}</tbody></table></div>
+    <p class="tnote">${T252_NOTE} Source: A12 · B13.</p>`;
+}
+
+/* ---------- Table 25-3, verbatim (A26 · B31) ---------- */
+const T253 = [
+  { id: 'loc', sys: 'Level of consciousness', f: 'Alterations may range from excitability, agitation, and combativeness to unresponsiveness' },
+  { id: 'skin', sys: 'Skin', f: 'Uncontrolled bleeding, easy bruising, petechiae, itching, pallor, jaundice (yellow appearance usually indicates liver problems), leg ulcers (may be seen with sickle cell disease)' },
+  { id: 'hn', sys: 'Head and neck', f: 'Epistaxis (bloody nose), bleeding gums, blurred vision, diplopia (double vision), complete or partial vision loss, seeing black or gray spots, retinal hemorrhage, vertigo, tinnitus' },
+  { id: 'chest', sys: 'Chest', f: 'Dyspnea, tachycardia, palpitations, chest pain, hemoptysis (coughing up blood), sternal tenderness (may be seen with leukemia, myeloma, or lymphoma)' },
+  { id: 'back', sys: 'Back and extremities', f: 'Chronic joint or bone pain or rigidity, edema' },
+  { id: 'gi', sys: 'Gastrointestinal', f: 'Ulcers, melena (blood in the stool), liver failure (causes jaundice), abdominal pain' },
+  { id: 'gu', sys: 'Genitourinary', f: 'Hematuria, menorrhagia, chronic or recurring infections' },
+];
+function t253() {
+  return `<div class="tblwrap"><table class="t"><caption><span>TABLE 25-3</span>Common Findings With Blood Disorders</caption>
+    <thead><tr><th>System</th><th>Examples of Common Findings</th></tr></thead>
+    <tbody>${T253.map(r => `<tr><td>${r.sys}</td><td data-l="Common findings">${r.f}</td></tr>`).join('')}</tbody></table></div><p class="tnote">Source: A26 · B31.</p>`;
+}
+
+/* ---------- Table 25-4, verbatim (A67 · B85) ---------- */
+const T254 = [
+  { r: 'A+', p: 'A+', add: ['A−', 'O+', 'O−'] }, { r: 'A−', p: 'A−', add: ['O−'] },
+  { r: 'AB+', p: 'AB+', add: ['AB−', 'A+', 'A−', 'B+', 'B−', 'O+', 'O−'] }, { r: 'AB−', p: 'AB−', add: ['A−', 'B−', 'O−'] },
+  { r: 'B+', p: 'B+', add: ['B−', 'O+', 'O−'] }, { r: 'B−', p: 'B−', add: ['O−'] },
+  { r: 'O+', p: 'O+', add: ['O−'] }, { r: 'O−', p: 'O−', add: [] },
+];
+function t254() {
+  return `<div class="tblwrap"><table class="t t3c"><caption><span>TABLE 25-4</span>ABO Rh Type and Preferred and Alternative Donor Types</caption>
+    <thead><tr><th>Recipient Blood Type</th><th>Preferred Donor Type</th><th>Additional Permissible Types</th></tr></thead>
+    <tbody>${T254.map(r => `<tr><td>${r.r}</td><td class="num" data-l="Preferred donor">${r.p}</td><td class="num" data-l="Additional permissible">${r.add.length ? r.add.join(', ') : 'None'}</td></tr>`).join('')}</tbody></table></div>
+    <p class="tnote">Data from: Applegate EJ. <i>The Anatomy and Physiology Learning System</i>. 4th ed. Philadelphia, PA: Saunders; 2011. Source: A67 · B85.</p>`;
+}

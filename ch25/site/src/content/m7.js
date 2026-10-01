@@ -1,0 +1,140 @@
+/* ===== Module 7 · Bleeding Disorders ===== */
+CONTENT.m7 = {
+  intro: 'Two ways clotting fails. In hemophilia one factor is missing from birth, so a clot never forms properly. In DIC the body clots everywhere at once, uses up its clotting factors, and then bleeds uncontrollably. Both connect directly to the cascade you ran in Module 2.',
+  steps: [
+    { t: 'card', id: 'm7c1', title: 'Hemophilia: a missing factor', src: 'A58 · A58n · B75',
+      predict: { q: 'Hemophilia A and B each lack one clotting factor. Which ones?', a: 'A: factor VIII. B: factor IX.' },
+      body: ['<k>Hemophilia</k> is a <k>bleeding disorder in which clotting does not occur or occurs insufficiently</k>. It is usually associated with an <k>X-linked recessive inheritance pattern</k> and is <k>primarily found in males</k>.',
+        'Two primary types: <k>Type A</k>: low levels of <k>factor VIII</k> (antihemophilic globulin and antihemophilic factor). <k>Type B</k>: deficiency of <k>factor IX</k> (plasma thromboplastin component / the <k>Christmas factor</k>).'],
+      hook: '<b>A</b> comes before <b>B</b>, and <b>8</b> comes before <b>9</b>: A = VIII, B = IX (Christmas).' },
+    { t: 'ix', id: 'm7x1', kind: 'cascade', title: 'Block a factor on the cascade', intro: 'Run the intrinsic pathway three times: normal, then without factor VIII, then without factor IX. Watch where the drop stops.', spec: {} },
+    { t: 'card', id: 'm7c2', title: 'Hemophilia: signs and what patients may need', src: 'A59 · A59n · B76',
+      body: ['<k>Levels of factors VIII and IX determine the severity</k> of the disease. Signs and symptoms are <k>the same in both types</k> and may include <k>acute and chronic bleeding</k> and <k>spontaneous intracranial bleeding</k>.',
+        'Patients with significant acute bleeding episodes may require <k>hospitalization for transfusion</k> and <k>infusion of factors VIII and IX</k>.'] },
+    { t: 'card', id: 'm7c3', title: 'Hemophilia: assessment and management', src: 'A60–A61 · notes · B77–78',
+      body: ['Assessment: <k>manage the ABCs</k>; be alert for <k>signs of acute blood loss</k>; note any <k>bleeding of unknown origin</k>; watch for <k>signs of hypoxia</k>. (From the primary survey: use caution with fluids to <k>avoid washing out clots</k>.)',
+        'Management: administer <k>oxygen if appropriate</k>; <k>note ECG findings</k> and treat symptomatic dysrhythmias as appropriate; <k>IV therapy</k> if needed; <k>analgesics</k> may be appropriate; <k>cover patients to maintain body temperature</k>. If the <k>bleeding stopped before you arrived</k>, suggest the patient seek <k>immediate follow-up</k>.'] },
+    { t: 'q', q: { id: 'm7q1', lv: 'R', src: 'A58, B75', stem: 'Hemophilia A is caused by low levels of:',
+      opts: ['Factor VIII (antihemophilic factor)', 'Factor IX (Christmas factor)', 'Factor X', 'Fibrinogen'],
+      why: 'Type A: low factor VIII (antihemophilic globulin and antihemophilic factor). Type B: factor IX deficiency.',
+      trap: [1, 'That is hemophilia B.'] } },
+    { t: 'q', q: { id: 'm7q2', lv: 'R', src: 'A58, B75', stem: 'Factor IX is also called:',
+      opts: ['Plasma thromboplastin component, the Christmas factor', 'Antihemophilic globulin', 'Tissue thromboplastin (III)', 'Fibrin'],
+      why: 'Type B: deficiency of factor IX (plasma thromboplastin component / the Christmas factor).',
+      trap: [1, 'Antihemophilic globulin is factor VIII.'] } },
+    { t: 'q', q: { id: 'm7q3', lv: 'R', src: 'A58n, B75', stem: 'Hemophilia is usually associated with which inheritance pattern, and is primarily found in whom?',
+      opts: ['X-linked recessive; males', 'Autosomal dominant; females', 'Inherited from both parents (HbSS); African Americans', 'Not inherited; older adults'],
+      why: 'Notes: usually an X-linked recessive inheritance pattern; primarily found in males.',
+      trap: [2, 'HbSS describes sickle cell disease.'] } },
+    { t: 'q', q: { id: 'm7q4', lv: 'R', src: 'A59n, B76', stem: 'What determines the severity of hemophilia?',
+      opts: ['The levels of factors VIII and IX', 'The patient’s blood type', 'The platelet count', 'The hematocrit'],
+      why: 'Notes: levels of factors VIII and IX determine the severity of the disease.',
+      trap: [2, 'Platelets are separate from the factor deficiency.'] } },
+    { t: 'q', q: { id: 'm7q5', lv: 'R', src: 'A59, B76', stem: 'Which serious bleed do the notes list as a sign of hemophilia?',
+      opts: ['Spontaneous intracranial bleeding', 'Splenic sequestration', 'Retinal detachment', 'Hemoptysis from pneumonia'],
+      why: 'Signs (same in both types): acute and chronic bleeding; spontaneous intracranial bleeding.',
+      trap: [1, 'That is sickle cell disease.'] } },
+    { t: 'q', q: { id: 'm7q6', lv: 'A', src: 'A61n, B78', stem: 'A known hemophilia patient had a nosebleed that stopped before you arrived; he feels well. What do your notes say?',
+      opts: ['Suggest he seek immediate follow-up', 'No further action is needed', 'Start factor VIII in the field', 'Give a large fluid bolus'],
+      why: 'Hemophilia management notes: if the bleeding stopped before you arrived, suggest the patient seek immediate follow-up.',
+      trap: [1, 'The notes ask for immediate follow-up even if bleeding stopped.'] } },
+    { t: 'q', q: { id: 'm7q7', lv: 'R', src: 'A61, B78', stem: 'Which is <b>NOT</b> part of hemophilia management in your notes?',
+      opts: ['Phlebotomy', 'Oxygen if appropriate', 'Note ECG findings', 'Cover the patient to maintain body temperature'],
+      why: 'Management: O₂ if appropriate, note ECG (treat symptomatic dysrhythmias), IV therapy, analgesics, cover to maintain temperature, follow-up if bleeding stopped.',
+      trap: [3, 'Covering to maintain temperature is in BOTH hemophilia and sickle cell management.'] } },
+    { t: 'q', q: { id: 'm7q8', lv: 'U', src: 'A59, B76', stem: 'Patients with significant acute hemophilia bleeds may need:',
+      opts: ['Hospitalization for transfusion and infusion of factors VIII and IX', 'Phlebotomy', 'Chemotherapy', 'Antipyretics and observation'],
+      why: 'A59: hospitalization for transfusion; infusion of factors VIII and IX.',
+      trap: [3, 'Antipyretic and observation treat a febrile transfusion reaction.'] } },
+
+    { t: 'card', id: 'm7c4', title: 'DIC: clotting, then bleeding', src: 'A55 · A55n · B71–72',
+      predict: { q: 'DIC progresses in two stages. What happens in each?', a: 'Stage 1: free thrombin and fibrin deposits increase, platelets aggregate, defibrination occurs. Stage 2: uncontrolled hemorrhage from reduced clotting factors.' },
+      body: ['<k>Disseminated intravascular coagulation (DIC)</k> may be caused by a <k>number of life-threatening conditions</k>. It progresses in <k>two stages</k>.',
+        '<k>First stage</k>: <k>free thrombin and fibrin deposits in the blood increase</k>; <k>platelets begin to aggregate</k>; <k>defibrination</k> (breakdown of the fibrin clots) occurs. <k>Second stage</k>: <k>uncontrolled hemorrhage</k> results from a <k>reduction in clotting factors</k>. The <k>mortality rate is hard to determine</k> (patients often have additional conditions); death is related to <k>uncontrolled bleeding, hypotension, and shock</k>.'],
+      hook: 'DIC = “<b>D</b>ies <b>I</b>n <b>C</b>lotting”: clots first (stage 1), then nothing left to clot with (stage 2).' },
+    { t: 'ix', id: 'm7x2', kind: 'dic', title: 'Step through the two stages', intro: 'Advance the vessel through DIC and answer one question per stage.', spec: {} },
+    { t: 'card', id: 'm7c5', title: 'DIC: assessment and management', src: 'A56–A57 · notes · B73–74',
+      body: ['Identify signs and symptoms associated with DIC <k>or progression toward it</k>. Patients may have <k>(episodes of) respiratory difficulty</k>, <k>signs of shock</k>, and <k>skin changes</k>: from <k>cold and clammy</k> to <k>pallor</k> to <k>small black-and-blue marks (purpura) on the chest and abdomen</k>.',
+        'Management: <k>maintain an airway</k>; administer <k>(supplemental) oxygen</k>; <k>treat for shock</k>; provide <k>pain management</k> and treat <k>abnormal heart rhythms</k>; <k>be optimistic but honest</k>.'] },
+    { t: 'q', q: { id: 'm7q9', lv: 'R', src: 'A55, B71', stem: 'In the <b>first</b> stage of DIC:',
+      opts: ['Free thrombin and fibrin deposits increase, platelets aggregate, and defibrination occurs', 'Uncontrolled hemorrhage results from reduced clotting factors', 'Factor VIII is missing from birth', 'RBCs are trapped in the spleen'],
+      why: 'Stage 1: free thrombin and fibrin deposits increase; platelets aggregate; defibrination occurs.',
+      trap: [1, 'That is the second stage.'] } },
+    { t: 'q', q: { id: 'm7q10', lv: 'R', src: 'A55, B71', stem: 'Defibrination means:',
+      opts: ['Breakdown of the fibrin clots', 'Formation of fibrin from fibrinogen', 'Removal of blood by phlebotomy', 'Loss of factor IX'],
+      why: 'A55: defibrination (breakdown of the fibrin clots).',
+      trap: [1, 'That is clot formation (thrombin converts fibrinogen to fibrin).'] } },
+    { t: 'q', q: { id: 'm7q11', lv: 'U', src: 'A55, B72', stem: 'Death in DIC is related to:',
+      opts: ['Uncontrolled bleeding, hypotension and shock', 'Stroke from hyperviscosity', 'Organ failure from plasma proteins', 'Spontaneous fractures'],
+      why: 'DIC mortality is hard to determine; death is related to uncontrolled bleeding, hypotension and shock.',
+      trap: [1, 'That is polycythemia.'] } },
+    { t: 'q', q: { id: 'm7q12', lv: 'R', src: 'A56, B73', stem: 'Small black-and-blue marks on the chest and abdomen in DIC are called:',
+      opts: ['Purpura', 'Petechiae', 'Icteric sclera', 'Melena'],
+      why: 'A56: skin changes from cold and clammy to pallor to small black-and-blue marks (purpura) on the chest and abdomen.',
+      trap: [1, 'Petechiae are the cutaneous bleeding of thrombocytopenia in anemia/Table 25-3.'] } },
+    { t: 'q', q: { id: 'm7q13', lv: 'R', src: 'A57, B74', stem: 'Which instruction is part of DIC management in your notes?',
+      opts: ['Be optimistic but honest', 'Perform phlebotomy', 'Recheck donor blood', 'Cover to prevent sickling'],
+      why: 'DIC management: airway, oxygen, treat shock, pain management and abnormal rhythms, be optimistic but honest.',
+      trap: [2, 'Recheck donor blood is transfusion-reaction care.'] } },
+    { t: 'q', q: { id: 'm7q14', lv: 'A', src: 'A55–A57, B71–74', stem: 'A septic ICU-transfer patient has oozing from every IV site, purpura on the chest and abdomen, BP 78/44 and HR 132. Your priority care is:',
+      opts: ['Maintain the airway, give oxygen, treat for shock, manage pain and abnormal rhythms', 'Give cold packs and rest', 'Phlebotomy to reduce viscosity', 'Withhold oxygen to avoid hyperoxia'],
+      why: 'This is the hemorrhagic stage of DIC (caused by a life-threatening condition). Management: airway, O₂, treat for shock, pain management, treat abnormal rhythms, be optimistic but honest.',
+      trap: [2, 'Phlebotomy treats polycythemia, the opposite problem.'] } },
+    { t: 'ix', id: 'm7x3', kind: 'sort', title: 'Hemophilia or DIC?', intro: 'Sort each fact.',
+      spec: { prompt: 'Tap a fact, then the disorder', bins: [{ id: 'h', title: 'Hemophilia' }, { id: 'd', title: 'DIC' }],
+        items: [
+          { t: 'X-linked recessive, mostly males', bin: 'h' }, { t: 'Low factor VIII or IX', bin: 'h' }, { t: 'Spontaneous intracranial bleeding', bin: 'h' },
+          { t: 'If bleeding stopped, seek immediate follow-up', bin: 'h' }, { t: 'Infusion of factors VIII and IX', bin: 'h' },
+          { t: 'Caused by a number of life-threatening conditions', bin: 'd' }, { t: 'Free thrombin and fibrin deposits increase', bin: 'd' }, { t: 'Defibrination', bin: 'd' },
+          { t: 'Purpura on chest and abdomen', bin: 'd' }, { t: 'Be optimistic but honest', bin: 'd' }, { t: 'Mortality rate hard to determine', bin: 'd' }] } },
+
+    { t: 'q', q: { id: 'm7s1', type: 'sa', src: 'A58–A61, B75–78', stem: 'Describe the two types of hemophilia, its signs, and the prehospital management.',
+      model: 'Type A: low factor VIII (antihemophilic globulin/factor). Type B: factor IX deficiency (plasma thromboplastin component, Christmas factor). Signs (same in both): acute and chronic bleeding, spontaneous intracranial bleeding. Management: O₂ if appropriate, note ECG (treat symptomatic dysrhythmias), IV therapy if needed (avoid washing out clots), analgesics, cover to maintain temperature; if bleeding stopped, immediate follow-up.',
+      points: ['A = factor VIII', 'B = factor IX (Christmas)', 'Acute/chronic and intracranial bleeding', 'O₂, ECG, IV, analgesics, keep warm', 'Follow-up if bleeding stopped'] } },
+    { t: 'q', q: { id: 'm7s2', type: 'sa', src: 'A55–A57, B71–74', stem: 'Explain the two stages of DIC and list its management.',
+      model: 'Stage 1: free thrombin and fibrin deposits in the blood increase; platelets aggregate; defibrination (breakdown of fibrin clots) occurs. Stage 2: uncontrolled hemorrhage from a reduction in clotting factors. Management: maintain airway, supplemental oxygen, treat for shock, pain management and treat abnormal heart rhythms, be optimistic but honest.',
+      points: ['Stage 1: thrombin/fibrin deposits ↑', 'Platelets aggregate; defibrination', 'Stage 2: hemorrhage from ↓ clotting factors', 'Airway, O₂, treat shock', 'Pain, rhythms, optimistic but honest'] } },
+  ],
+
+  recall: [
+    { p: 'Hemophilia: definition, inheritance, types', a: 'Clotting does not occur or occurs insufficiently · X-linked recessive, mainly males · A = low factor VIII (antihemophilic globulin/factor) · B = factor IX (plasma thromboplastin component, Christmas factor) · severity = factor levels', fc: 'm7f1' },
+    { p: 'Hemophilia: signs, needs, assessment, management', a: 'Acute & chronic bleeding, spontaneous intracranial bleeding · transfusion, factor VIII/IX infusion · ABCs, acute blood loss, unknown-origin bleeding, hypoxia · O₂, ECG, IV, analgesics, keep warm, follow-up if bleeding stopped', fc: 'm7f3' },
+    { p: 'DIC: two stages and mortality', a: 'Stage 1: free thrombin & fibrin deposits ↑, platelets aggregate, defibrination · stage 2: uncontrolled hemorrhage from ↓ clotting factors · mortality hard to determine; death from bleeding, hypotension, shock', fc: 'm7f6' },
+    { p: 'DIC: assessment and management', a: 'Respiratory difficulty, shock, skin: cold & clammy → pallor → purpura on chest/abdomen · airway, O₂, treat shock, pain, rhythms, optimistic but honest', fc: 'm7f8' },
+  ],
+
+  hooks: [
+    { ic: 'A8', t: 'A = 8, B = 9', d: 'Hemophilia A: factor VIII. Hemophilia B: factor IX, the Christmas factor.' },
+    { ic: 'X♂', t: 'X-linked recessive, so mostly males', d: 'Severity follows the factor VIII/IX level.' },
+    { ic: 'FU', t: 'Bleeding stopped? Still follow up', d: 'Suggest immediate follow-up for a hemophilia patient whose bleeding stopped before you arrived.' },
+    { ic: 'DIC', t: 'Clots first, then bleeds', d: 'Stage 1 uses up clotting factors in clots; stage 2 bleeds uncontrollably.' },
+    { ic: '😐', t: 'Optimistic but honest', d: 'The DIC management line about communication.' },
+  ],
+
+  flash: [
+    { id: 'm7f1', f: 'Hemophilia: definition, inheritance, sex?', b: 'Bleeding disorder in which clotting does not occur or occurs insufficiently; usually X-linked recessive; primarily males.' },
+    { id: 'm7f2', f: 'Hemophilia A vs B?', b: 'A: low factor VIII (antihemophilic globulin and antihemophilic factor). B: deficiency of factor IX (plasma thromboplastin component / Christmas factor).' },
+    { id: 'm7f3', f: 'Hemophilia: severity, signs, what patients may require?', b: 'Severity = levels of factors VIII and IX. Signs (same in both): acute and chronic bleeding, spontaneous intracranial bleeding. May require hospitalization for transfusion and infusion of factors VIII and IX.' },
+    { id: 'm7f4', f: 'Hemophilia: assessment?', b: 'Manage the ABCs; be alert for acute blood loss; note bleeding of unknown origin; watch for hypoxia.' },
+    { id: 'm7f5', f: 'Hemophilia: management?', b: 'O₂ if appropriate; note ECG (treat symptomatic dysrhythmias); IV therapy if needed; analgesics may be appropriate; cover to maintain body temperature; if bleeding stopped, suggest immediate follow-up.' },
+    { id: 'm7f6', f: 'DIC: the two stages?', b: 'Stage 1: free thrombin and fibrin deposits increase; platelets aggregate; defibrination (breakdown of fibrin clots). Stage 2: uncontrolled hemorrhage from reduced clotting factors.' },
+    { id: 'm7f7', f: 'DIC: cause and mortality?', b: 'May be caused by a number of life-threatening conditions. Mortality hard to determine (additional conditions); death from uncontrolled bleeding, hypotension and shock.' },
+    { id: 'm7f8', f: 'DIC: assessment?', b: 'Signs of DIC or progression toward it; episodes of respiratory difficulty; signs of shock; skin changes: cold and clammy → pallor → purpura on chest and abdomen.' },
+    { id: 'm7f9', f: 'DIC: management?', b: 'Maintain airway; supplemental O₂; treat for shock; pain management and treat abnormal heart rhythms; be optimistic but honest.' },
+  ],
+
+  arabic: `
+<div class="blk"><h3>الهيموفيليا <span class="en">Hemophilia</span></h3><ul>
+<li>اضطراب نزف: التخثر لا يحدث أو لا يكفي؛ وراثة متنحية مرتبطة بـ<span class="en">X</span>؛ غالباً عند الذكور</li>
+<li><span class="en">Type A</span>: نقص <span class="en">factor VIII</span> · <span class="en">Type B</span>: نقص <span class="en">factor IX (Christmas factor)</span>؛ والشدة حسب مستوى العاملين</li>
+<li>الأعراض واحدة في النوعين: نزف حاد ومزمن، ونزف داخل الجمجمة تلقائي؛ وقد يحتاج نقل دم وتسريب العوامل</li>
+<li>التقييم: <span class="en">ABCs</span>، فقد دم حاد، نزف مجهول المصدر، نقص أكسجة</li>
+<li>العلاج: أكسجين، تخطيط قلب، وريدي، مسكنات، تدفئة؛ وإذا توقف النزف قبل وصولك اطلب منه متابعة فورية</li></ul></div>
+<div class="blk"><h3>التخثر المنتشر داخل الأوعية <span class="en">DIC</span></h3><ul>
+<li>تسببه حالات مهددة للحياة، ويمر بمرحلتين</li>
+<li>المرحلة ١: زيادة <span class="en">thrombin</span> وترسبات <span class="en">fibrin</span>، تجمع الصفائح، و<span class="en">defibrination</span> (تكسير الجلطات)</li>
+<li>المرحلة ٢: نزف غير مسيطر عليه بسبب نقص عوامل التخثر</li>
+<li>الوفاة من النزف وهبوط الضغط والصدمة؛ نسبة الوفيات صعبة التحديد</li>
+<li>التقييم: صعوبة تنفس، صدمة، جلد بارد ورطب ← شحوب ← <span class="en">purpura</span> على الصدر والبطن</li>
+<li>العلاج: مجرى هواء، أكسجين، علاج الصدمة، تسكين، علاج اضطراب النظم، وكن متفائلاً لكن صادقاً</li></ul></div>`,
+};

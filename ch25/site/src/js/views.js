@@ -316,6 +316,7 @@ STEP_RENDER.card = (w, s, { c, flow, p }) => {
     f.appendChild(el(`<button class="zoomer" aria-label="Open figure full screen">${I.expand}</button>`));
     f.onclick = () => openLightbox(F.k, { title: F.title || s.title, caption: F.cap ? `<b style="color:#2fd3bf">What to notice:</b> ${F.cap}` : '', only: F.only, labels: F.labels });
     fg.appendChild(f);
+    const lg = F.labels !== false && legendEl(F.k, F.only); if (lg) fg.appendChild(lg);
     if (F.cap) fg.appendChild(el(`<figcaption><b>What to notice</b>${F.cap}</figcaption>`));
     fgrid.appendChild(fg);
   });
@@ -643,7 +644,7 @@ VIEWS.arabic = (app, { mid }) => {
     const c = CONTENT[x.id];
     const d = el('<div class="arwrap"></div>'); d.innerHTML = c.arabic; w.appendChild(d);
   });
-  if (!mid) w.appendChild(el(`<p class="muted">ملخصات بقية الوحدات تضاف مع البناء الكامل.</p>`));
+  if (!mid && MODULES.some(x => !ready(x.id))) w.appendChild(el(`<p class="muted">ملخصات بقية الوحدات تضاف مع البناء الكامل.</p>`));
   m.appendChild(w);
   if (mid) { const b = el(`<button class="btn block" style="margin-top:16px">Back to the module</button>`); b.onclick = back; m.appendChild(b); }
 };

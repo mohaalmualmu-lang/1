@@ -133,6 +133,7 @@ function openLightbox(figKey, opts = {}) {
     ${opts.caption ? `<div class="cap">${opts.caption}</div>` : ''}</div>`);
   const body = $('.body', lb);
   body.appendChild(figureEl(figKey, { labels: opts.labels !== false, only: opts.only }));
+  const lg = opts.labels !== false && legendEl(figKey, opts.only); if (lg) body.appendChild(lg);
   const close = () => { lb.remove(); document.removeEventListener('keydown', onKey); };
   const onKey = e => { if (e.key === 'Escape') close(); };
   $('[data-x]', lb).onclick = close;
@@ -148,12 +149,21 @@ function figureEl(key, opts = {}) {
   const wrap = el(`<div class="fig"><img alt="${esc(opts.alt || (f && f.alt) || key)}" src="${IMG[key]}" loading="lazy" decoding="async"></div>`);
   if (f && opts.labels !== false) {
     const only = opts.only ? new Set(opts.only) : null;
+    let n = 0;
     (f.labels || []).forEach(l => {
       if (l.hide || (only && !only.has(l.id)) || (!only && l.path && !opts.withPath)) return;
+      if (f.dense) { const [x, y] = pinCenter(l); wrap.appendChild(el(`<span class="pin num" style="left:${x}%;top:${y}%">${++n}</span>`)); return; }
       wrap.appendChild(pinEl(l, S.set.arLabels));
     });
   }
   return wrap;
+}
+/* legend for dense figures (numbered dots) */
+function legendEl(key, only) {
+  const f = FIGS[key]; if (!f || !f.dense) return null;
+  const set = only ? new Set(only) : null;
+  const ls = (f.labels || []).filter(l => !l.hide && (!set || set.has(l.id)));
+  return el(`<ol class="legend fixed">${ls.map((l, i) => `<li><b>${i + 1}</b>${esc(S.set.arLabels ? l.ar : l.en)}</li>`).join('')}</ol>`);
 }
 function pinCenter(l) { return [(l.box[0] + l.box[2]) / 2, (l.box[1] + l.box[3]) / 2]; }
 function pinEl(l, ar) {

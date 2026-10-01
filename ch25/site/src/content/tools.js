@@ -13,6 +13,48 @@ const ENTITIES = [
   { id: 'hgbl', ty: 'Lab test', n: 'Hemoglobin level', ar: 'مستوى الهيموغلوبين', mid: 'm1', src: 'A9', def: 'Identifies the amount of hemoglobin found within the RBCs.', find: '12–16 g/dL F · 14–18 M · 10.7–17.1 children.', care: '' },
   { id: 'bohr', ty: 'Component', n: 'Bohr effect', ar: 'تأثير بور', mid: 'm1', src: 'A8n', def: 'Oxygen-rich RBCs release oxygen in an environment with higher CO₂ concentrations (more acidotic).', find: '', care: '' },
   { id: 'hemopoietic', ty: 'Organ system', n: 'Hematopoietic system', ar: 'الجهاز المكوّن للدم', mid: 'm1', src: 'A3', def: 'Organs and tissues involved in the production of blood components.', find: 'Primarily bone marrow, spleen, lymph nodes.', care: '' },
+  // Module 2
+  { id: 'neutro', ty: 'Cell', n: 'Neutrophil', ar: 'العدلة', mid: 'm2', src: 'A11, A12', def: 'Granulocyte that makes up the majority of the circulating WBCs.', find: '50%–60%; 2,500–8,000/mm³. Low: leukemia, infections, rheumatoid arthritis, vitamin B₁₂ deficiency, enlarged spleen. High: bacterial infections, tissue breakdown, hemolytic reactions, tumors, MI, surgical stress, cancer.', care: 'Too few = neutropenia.' },
+  { id: 'baso', ty: 'Cell', n: 'Basophil', ar: 'القعدة', mid: 'm2', src: 'A12', def: 'Granulocyte; Table 25-2 calls it “also known as mast cells” ⚑.', find: '0.5%–1%; 25–100/mm³. Low: allergic reactions, hyperthyroidism, MI, bleeding ulcers, stress. High: certain leukemias, inflammations, allergy, polycythemia, hemolytic anemia.', care: '' },
+  { id: 'eos', ty: 'Cell', n: 'Eosinophil', ar: 'الحمضة', mid: 'm2', src: 'A12', def: 'Granulocyte.', find: '1%–4%; 50–500/mm³. Low: mononucleosis, HF, Cushing disease. High: Addison disease, tumors, skin infections, allergies.', care: '' },
+  { id: 'lympho', ty: 'Cell', n: 'Lymphocyte', ar: 'اللمفاوية', mid: 'm2', src: 'A12', def: 'Agranulocyte (from the lymphoblast).', find: '20%–40%; 1,000–4,000/mm³. Low: Hodgkin disease, burns, trauma, lupus, Cushing disease, immunodeficiency states. High: bacterial and viral infections, hepatitis, leukemia, toxoplasmosis, Graves disease.', care: 'The spleen assists with lymphocyte production.' },
+  { id: 'monoc', ty: 'Cell', n: 'Monocyte', ar: 'الوحيدة', mid: 'm2', src: 'A12', def: 'Agranulocyte (from the monoblast).', find: '2%–6%; 100–700/mm³. Low: corticosteroid use, infections, rheumatoid arthritis, HIV. High: bacterial and parasitic infections, recovery from acute infections, TB, hematologic disorders.', care: '' },
+  { id: 'marrow', ty: 'Organ', n: 'Bone marrow', ar: 'نخاع العظم', mid: 'm2', src: 'A15', def: 'Primary site for cell production.', find: 'Found in most long bones and the pelvis, skull and vertebrae.', care: 'Replaced by abnormal lymphoblasts in acute leukemia; plasma-cell tumors in myeloma.' },
+  { id: 'liver', ty: 'Organ', n: 'Liver', ar: 'الكبد', mid: 'm2', src: 'A15', def: 'Produces the clotting factors; filters the blood; removes toxins.', find: 'Essential to normal metabolism and homeostasis; breaks down old RBCs into bile; highly vascular; stores blood.', care: 'Liver failure causes jaundice (Table 25-3).' },
+  { id: 'spleen', ty: 'Organ', n: 'Spleen', ar: 'الطحال', mid: 'm2', src: 'A15', def: 'Filters and breaks down RBCs; helps provide homeostasis and infection control.', find: 'Also vascular; assists with lymphocyte production; stores one-third of the platelets.', care: 'Often obstructed in sickle cell crisis; enlarged in polycythemia (abdominal pain).' },
+  { id: 'hemostasis', ty: 'Process', n: 'Hemostasis', ar: 'الإرقاء', mid: 'm2', src: 'A13', def: 'The process that allows the body to stop bleeding.', find: 'Vascular spasm, coagulation, platelet plugging (notes ⚑ order).', care: 'Clots are fibrin: thrombin converts fibrinogen to fibrin; calcium binds.' },
+  { id: 'cascade', ty: 'Process', n: 'Clotting (coagulation) cascade', ar: 'شلال التخثر', mid: 'm2', src: 'A13, A14', def: 'Process by which clotting factors work together to ultimately form fibrin.', find: 'Started through an intrinsic or an extrinsic pathway; both activate X → Xa (common pathway).', care: 'Coagulopathy = anything interfering with it (e.g. von Willebrand disease).' },
+  { id: 'thrombocytosis', ty: 'Condition', n: 'Thrombocytosis', ar: 'كثرة الصفائح', mid: 'm2', src: 'A13n', def: 'Production of too many platelets.', find: 'Can create thrombosis.', care: '' },
+  { id: 'neutropenia', ty: 'Condition', n: 'Neutropenia', ar: 'نقص العدلات', mid: 'm2', src: 'A11', def: 'An abnormally low number of neutrophils.', find: 'Neutrophils make up the majority of circulating WBCs.', care: '' },
+  { id: 'vwd', ty: 'Condition', n: 'von Willebrand disease', ar: 'داء فون ويلبراند', mid: 'm2', src: 'A14n', def: 'The notes’ example of a coagulopathy.', find: 'Heavy or prolonged bleeding.', care: '' },
+  // Module 4
+  { id: 'scd', ty: 'Condition', n: 'Sickle cell disease / crisis', ar: 'فقر الدم المنجلي', mid: 'm4', src: 'A29–A34', def: 'Most common inherited blood disorder: gene defect of HbA (HbSS / HbS ⚑); oblong RBCs.', find: 'SOB, signs of pneumonia, poor skin perfusion + hypotension, jaundice, icteric sclera, mild dehydration; children hands/feet, adults back/proximal extremities.', care: 'Position of comfort, blanket (cold → sickling), O₂, IV fluids, analgesics (high threshold), rest.', img: 'rbc_sickle' },
+  { id: 'aplastic', ty: 'Condition', n: 'Aplastic crisis', ar: 'الأزمة اللاتنسجية', mid: 'm4', src: 'A30', def: 'Body temporarily stops RBC production.', find: 'Easily tired, anemic, pale, short of breath.', care: 'Sickle cell care.' },
+  { id: 'hemolytic', ty: 'Condition', n: 'Hemolytic crisis', ar: 'الأزمة الانحلالية', mid: 'm4', src: 'A30', def: 'Acute RBC destruction.', find: 'Jaundice.', care: 'Sickle cell care.' },
+  { id: 'voc', ty: 'Condition', n: 'Vasoocclusive crisis', ar: 'أزمة انسداد الأوعية', mid: 'm4', src: 'A30', def: 'Blood flow to an organ becomes restricted.', find: 'Pain, ischemia, often organ damage; usually 5–7 days; spleen frequently obstructed.', care: 'Sickle cell care.' },
+  { id: 'acs', ty: 'Condition', n: 'Acute chest syndrome', ar: 'متلازمة الصدر الحادة', mid: 'm4', src: 'A31', def: 'Vasoocclusive crisis associated with pneumonia (A31: and PE ⚑).', find: 'Chest pain, fever, cough. Vasoocclusion in the brain may cause stroke.', care: 'Sickle cell care.' },
+  { id: 'ssc', ty: 'Condition', n: 'Splenic sequestration crisis', ar: 'أزمة احتجاز الطحال', mid: 'm4', src: 'A31', def: 'Sickle cells block blood from leaving the spleen; usually infants or toddlers.', find: 'Painful acute spleen enlargement; hard, bloated, painful abdomen. Acute syndrome: dramatic Hb fall, sudden weakness, pallor, tachypnea, tachycardia; can rapidly progress to shock.', care: 'Sickle cell care; treat shock.' },
+  // Module 5
+  { id: 'anemia', ty: 'Condition', n: 'Anemia', ar: 'فقر الدم', mid: 'm5', src: 'A35–A39', def: 'Hemoglobin or RBC level lower than normal.', find: 'Worn down, no energy, overexerted, can’t catch breath; anginal chest pain, skin color changes, leukopenia, thrombocytopenia (petechiae, mucous-membrane bleeding).', care: 'Comfort, airway/breathing, frequent VS, monitor/12-lead for chest pain, BP & fluids; rapid transport for mental status change, hypotension, other changes.' },
+  { id: 'ida', ty: 'Condition', n: 'Iron-deficiency anemia', ar: 'فقر الدم بنقص الحديد', mid: 'm5', src: 'A36', def: 'The most common type of anemia.', find: 'Causes: GI blood loss, menstrual bleeding, frequent donations or diagnostic tests, premature birth or low birth weight.', care: 'As for anemia.' },
+  { id: 'g6pd', ty: 'Condition', n: 'G6PD deficiency', ar: 'نقص إنزيم G6PD', mid: 'm5', src: 'A37', def: 'Deficiency of glucose-6-phosphate dehydrogenase, the enzyme protection of RBCs during infections.', find: 'Most common in African Americans; a potential cause of anemia.', care: '' },
+  { id: 'poly', ty: 'Condition', n: 'Polycythemia', ar: 'كثرة الحمر', mid: 'm5', src: 'A51–A54', def: 'Overabundance or overproduction of RBCs → increased viscosity and volume; thrombus risk.', find: 'Altered LOC, hypoxia, respiratory distress, pulse/skin changes, tachycardia; dyspnea; pruritus; skin temperature changes.', care: 'Chief complaint first; supportive care, O₂, IV access, transport. Clinical: phlebotomy (Hct < 45% men, < 42% women), cancer-type therapy.' },
+  // Module 6
+  { id: 'leuk', ty: 'Condition', n: 'Leukemia', ar: 'اللوكيميا', mid: 'm6', src: 'A40–A44', def: 'Cancer in the lymphoid system ⚑ with increased immature/abnormal blood cells (esp. WBCs).', find: 'Anemia, thrombocytopenia, leukocytosis; bleeding, bruising, infections, fever; hypotension and tachycardia often.', care: 'Gloves + mask; airway, O₂, IV fluids, analgesics, emotional support; medical control, document, refusal form if declined.', img: 'leuk_child' },
+  { id: 'nhl', ty: 'Condition', n: 'Non-Hodgkin lymphoma', ar: 'لمفوما لاهودجكينية', mid: 'm6', src: 'A46', def: 'Lymphoma that can occur at any age and can be hereditary.', find: 'Indolent (may never leave the lymphoid system), aggressive, highly aggressive (multiple organs quickly).', care: 'Lymphoma care.' },
+  { id: 'hl', ty: 'Condition', n: 'Hodgkin lymphoma', ar: 'لمفوما هودجكن', mid: 'm6', src: 'A47–A48', def: 'Painless, progressive enlargement of the lymphoid glands; rare; spleen and lymph nodes.', find: 'Peaks at 10 and 35 years and late life. Night sweats, chills, persistent cough, swollen nodes, loss of appetite, weight loss, itching, fatigue, bone pain.', care: 'Aggressive high-dose analgesia; fluids + O₂; treat rhythms; rapid transport if no improvement.' },
+  { id: 'mm', ty: 'Condition', n: 'Multiple myeloma', ar: 'الورم النقوي المتعدد', mid: 'm6', src: 'A62–A65', def: 'Plasma cells in the bone marrow increase abnormally, forming tumors in the bone.', find: 'Mostly > 40; anemia, infections, organ failure; spontaneous fractures, bone and back pain. Early: fatigue, mild pain; late: hemorrhage, weight loss, fractures, pain.', care: 'Mask and gloves; IV fluids, pain management, supportive and definitive care.' },
+  // Module 7
+  { id: 'hemoA', ty: 'Condition', n: 'Hemophilia A', ar: 'الهيموفيليا أ', mid: 'm7', src: 'A58', def: 'Low levels of factor VIII (antihemophilic globulin and antihemophilic factor).', find: 'Acute and chronic bleeding; spontaneous intracranial bleeding.', care: 'O₂, ECG, IV, analgesics, keep warm; follow-up if bleeding stopped.' },
+  { id: 'hemoB', ty: 'Condition', n: 'Hemophilia B', ar: 'الهيموفيليا ب', mid: 'm7', src: 'A58', def: 'Deficiency of factor IX (plasma thromboplastin component / Christmas factor).', find: 'Same signs as type A.', care: 'As for hemophilia A.' },
+  { id: 'dic', ty: 'Condition', n: 'Disseminated intravascular coagulation (DIC)', ar: 'التخثر المنتشر داخل الأوعية', mid: 'm7', src: 'A55–A57', def: 'Two stages: clotting (thrombin and fibrin deposits, platelet aggregation, defibrination), then uncontrolled hemorrhage from reduced clotting factors.', find: 'Respiratory difficulty, shock, skin cold & clammy → pallor → purpura on chest and abdomen.', care: 'Airway, O₂, treat shock, pain and rhythms, be optimistic but honest.' },
+  // Module 8
+  { id: 'tx_hem', ty: 'Complication', n: 'Hemolytic transfusion reaction', ar: 'تفاعل انحلالي', mid: 'm8', src: 'A69', def: 'Greatest threat; recipient–donor incompatibility; immune system destroys the new RBCs.', find: 'Chills, fever, back pain, vomiting, tachycardia, hypotension.', care: 'Stop transfusion → recheck → medical control → support → replace with NS → retain.' },
+  { id: 'tx_feb', ty: 'Complication', n: 'Febrile reaction', ar: 'تفاعل حموي', mid: 'm8', src: 'A69', def: 'Most common complication; usually benign.', find: 'Fever.', care: 'Antipyretic and observation.' },
+  { id: 'tx_all', ty: 'Complication', n: 'Allergic transfusion reaction', ar: 'تفاعل تحسسي', mid: 'm8', src: 'A69', def: 'Anaphylactic reaction to preservatives or other agents in the product.', find: 'Usually within the first few minutes; classic anaphylactic signs.', care: 'Stop the transfusion; supportive care.' },
+  { id: 'tx_trali', ty: 'Complication', n: 'Transfusion-related lung injury', ar: 'أذية رئوية مرتبطة بالنقل', mid: 'm8', src: 'A69', def: 'Noncardiogenic pulmonary edema from increased capillary permeability post-transfusion.', find: '', care: 'Support the ABCs.' },
+  { id: 'tx_co', ty: 'Complication', n: 'Circulatory overload', ar: 'فرط الحمل الدوراني', mid: 'm8', src: 'A69', def: 'Fluid overload, typically in preexisting cardiomyopathy or ventricular dysfunction.', find: '', care: 'Diuresis; oxygen, nitrates, morphine.' },
+  { id: 'tx_bac', ty: 'Complication', n: 'Bacterial infection (transfusion)', ar: 'عدوى بكتيرية', mid: 'm8', src: 'A69', def: 'From poor blood product handling or contamination during infusion.', find: 'Can lead to full systemic sepsis.', care: '' },
 ];
 
 const NUMBERS = [
@@ -38,6 +80,36 @@ const NUMBERS = [
   { q: 'Components of blood listed in the notes', a: '4', d: ['2', '3', '5'], src: 'A2, B2', mid: 'm1' },
   { q: 'Primary functions of blood', a: '8', d: ['4', '6', '10'], src: 'A5, B6', mid: 'm1' },
   { q: 'Common lab tests for red cells', a: '3', d: ['2', '4', '5'], src: 'A9, B10', mid: 'm1' },
+  { q: 'Normal WBC count, adults (cells/mm³)', a: '4,500–10,000', d: ['4,500–15,500', '9,400–34,000', '150,000–400,000'], src: 'A12', mid: 'm2' },
+  { q: 'Normal WBC count, children (cells/mm³)', a: '4,500–15,500', d: ['4,500–10,000', '9,400–34,000', '1,000–4,000'], src: 'A12', mid: 'm2' },
+  { q: 'Normal WBC count, infants (cells/mm³)', a: '9,400–34,000', d: ['4,500–15,500', '4,500–10,000', '25–100'], src: 'A12', mid: 'm2' },
+  { q: 'Neutrophils (% of WBCs; cells/mm³)', a: '50%–60%; 2,500–8,000', d: ['20%–40%; 1,000–4,000', '2%–6%; 100–700', '1%–4%; 50–500'], src: 'A12', mid: 'm2' },
+  { q: 'Basophils (% of WBCs; cells/mm³)', a: '0.5%–1%; 25–100', d: ['1%–4%; 50–500', '2%–6%; 100–700', '20%–40%; 1,000–4,000'], src: 'A12', mid: 'm2' },
+  { q: 'Eosinophils (% of WBCs; cells/mm³)', a: '1%–4%; 50–500', d: ['0.5%–1%; 25–100', '2%–6%; 100–700', '50%–60%; 2,500–8,000'], src: 'A12', mid: 'm2' },
+  { q: 'Lymphocytes (% of WBCs; cells/mm³)', a: '20%–40%; 1,000–4,000', d: ['50%–60%; 2,500–8,000', '2%–6%; 100–700', '1%–4%; 50–500'], src: 'A12', mid: 'm2' },
+  { q: 'Monocytes (% of WBCs; cells/mm³)', a: '2%–6%; 100–700', d: ['1%–4%; 50–500', '20%–40%; 1,000–4,000', '0.5%–1%; 25–100'], src: 'A12', mid: 'm2' },
+  { q: 'Neutrophils expected if WBC is 5,000 (footnote b)', a: '2,500 to 3,000', d: ['500 to 600', '5,000 to 6,000', '250 to 300'], src: 'A12 (alt)', mid: 'm2' },
+  { q: 'Share of platelets circulating in the blood', a: 'About two-thirds', d: ['About one-third', 'About half', 'All of them'], src: 'A13, B14', mid: 'm2' },
+  { q: 'Share of platelets stored in the spleen', a: 'One-third', d: ['Two-thirds', 'One-half', 'None'], src: 'A15n, B18', mid: 'm2' },
+  { q: 'Parts of hemostasis in the notes', a: '3', d: ['2', '4', '5'], src: 'A13n', mid: 'm2' },
+  { q: 'Seven parts of emergency care for blood disorders', a: '7 (slide shows 6)', d: ['5', '6 only', '8'], src: 'A28, A28n', mid: 'm3' },
+  { q: 'Systems in Table 25-3', a: '7', d: ['5', '6', '9'], src: 'A26', mid: 'm3' },
+  { q: '“Look for” items in history taking', a: '11', d: ['7', '9', '5'], src: 'A23', mid: 'm3' },
+  { q: 'People with sickle cell disease in the US (2016)', a: '≈ 100,000', d: ['≈ 10,000', '≈ 1,000,000', '≈ 42,000'], src: 'A29n', mid: 'm4' },
+  { q: 'Sickle cell life expectancy (males / females)', a: '42 / 48 years', d: ['48 / 42 years', '65 / 70 years', '35 / 40 years'], src: 'A29n', mid: 'm4' },
+  { q: 'Usual length of a vasoocclusive crisis', a: '5–7 days', d: ['5 days', '1–2 days', '2–3 weeks'], src: 'A30', mid: 'm4' },
+  { q: 'Phlebotomy hematocrit target in polycythemia (men / women)', a: '< 45% / < 42%', d: ['< 50% / < 45%', '< 42% / < 45%', '< 40% / < 35%'], src: 'A52n', mid: 'm5' },
+  { q: 'Chronic leukemia: more frequent from age', a: '65 years or older', d: ['40 or older', '10 and 35', 'Any age'], src: 'A41', mid: 'm6' },
+  { q: '5-year survival, children with ALL', a: '> 90%', d: ['≈ 50%', '< 10%', '≈ 70%'], src: 'A42n', mid: 'm6' },
+  { q: 'Hodgkin lymphoma peak ages', a: '10 and 35 years, and late life', d: ['65 and older', 'Over 40', 'Under 5'], src: 'A47', mid: 'm6' },
+  { q: 'Multiple myeloma occurs mostly in patients', a: 'Older than 40', d: ['65 or older', 'Under 20', '10 and 35'], src: 'A63n', mid: 'm6' },
+  { q: 'Stages of DIC', a: '2', d: ['3', '4', '1'], src: 'A55', mid: 'm7' },
+  { q: 'Primary types of hemophilia', a: '2 (A: VIII, B: IX)', d: ['3', '1', '4'], src: 'A58', mid: 'm7' },
+  { q: 'Transfusion reactions: share of transfusions', a: '≈ 0.2% to 10%', d: ['≈ 20% to 30%', '< 0.01%', '≈ 50%'], src: 'A66n', mid: 'm8' },
+  { q: 'Close monitoring after starting a transfusion', a: 'First 30 to 60 minutes', d: ['First 5 minutes', 'First 24 hours', 'First 7 days'], src: 'A66', mid: 'm8' },
+  { q: 'Transfusion reactions may be delayed up to', a: '7 days', d: ['24 hours', '60 minutes', '30 days'], src: 'A68n', mid: 'm8' },
+  { q: 'Transfusion complication categories', a: '6', d: ['4', '5', '8'], src: 'A69', mid: 'm8' },
+  { q: 'Additional permissible types for an AB+ recipient', a: '7', d: ['3', '0', '1'], src: 'A67', mid: 'm8' },
 ];
 
 const PICQ = [
@@ -47,17 +119,24 @@ const PICQ = [
   { img: 'table25_1', a: 'Table 25-1: RBC and platelet counts', d: ['Table 25-2: WBC count and differential', 'Table 25-3: findings with blood disorders', 'Table 25-4: ABO Rh donor types'], mid: 'm1' },
   { img: 'table25_2', a: 'Table 25-2: WBC count and differential', d: ['Table 25-1: RBC and platelet counts', 'Table 25-4: ABO Rh donor types', 'Table 25-3: findings with blood disorders'], mid: 'm2' },
   { img: 'table25_3', a: 'Table 25-3: common findings with blood disorders', d: ['Table 25-1: RBC and platelet counts', 'Table 25-2: WBC count and differential', 'Table 25-4: ABO Rh donor types'], mid: 'm3' },
+  { img: 'hemato', a: 'Development of blood cells from the hemocytoblast', d: ['The clotting cascade', 'Blood composition', 'Blood-forming organs'], mid: 'm2' },
+  { img: 'cascade', a: 'The clotting (coagulation) cascade', d: ['Development of blood cells', 'ABO donor table', 'Blood composition'], mid: 'm2' },
+  { img: 'organs', a: 'Bone marrow, liver and spleen', d: ['Kidneys and ureters', 'Lymph nodes of the neck', 'Heart and lungs'], mid: 'm2' },
+  { img: 'leuk_child', a: 'A child receiving leukemia treatment', d: ['A child in sickle cell crisis', 'A child with hemophilia', 'A child with a transfusion reaction'], mid: 'm6' },
   { img: 'table25_4', a: 'Table 25-4: ABO Rh and donor types', d: ['Table 25-1: RBC and platelet counts', 'Table 25-2: WBC count and differential', 'Table 25-3: findings with blood disorders'], mid: 'm8' },
 ];
 
 /* tables shown in the cheat sheet under their module */
 const TABLES = [
   { mid: 'm1', title: 'Table 25-1 · RBC and Platelet Counts', html: t251() },
+  { mid: 'm2', title: 'Table 25-2 · WBC Count and Differential', html: t252() },
+  { mid: 'm3', title: 'Table 25-3 · Common Findings With Blood Disorders', html: t253() },
+  { mid: 'm8', title: 'Table 25-4 · ABO Rh Type and Preferred and Alternative Donor Types', html: t254() },
 ];
 
 const IMG_TITLES = {
   blood_comp: 'Blood composition', table25_1: 'Table 25-1 (original)', table25_2: 'Table 25-2 (original)', table25_3: 'Table 25-3 (original)', table25_4: 'Table 25-4 (original)',
-  rbc_normal: 'Normal red blood cells', rbc_sickle: 'Normal and sickle red blood cells', leuk_child: 'Child with leukemia', ems_care: 'EMS crew treating a patient',
+  rbc_normal: 'Normal red blood cells', hemato: 'Development of blood cells', organs: 'Major players: marrow, liver, spleen', cascade: 'Clotting cascade', rbc_sickle: 'Normal and sickle red blood cells', leuk_child: 'Child with leukemia', ems_care: 'EMS crew treating a patient',
 };
-const IMG_MOD = { blood_comp: 'm1', table25_1: 'm1', table25_2: 'm2', table25_3: 'm3', table25_4: 'm8', rbc_normal: 'm4', rbc_sickle: 'm4', leuk_child: 'm6', ems_care: 'm6' };
-const IX_NAMES = { label: 'Tap-to-label', order: 'Sequence builder', sort: 'Sort game', match: 'Match game', tube: 'Centrifuge', labcheck: 'CBC analyzer', tdrill: 'Table drill', triage: 'Clinical case', compare: 'Picture compare' };
+const IMG_MOD = { hemato: 'm2', organs: 'm2', cascade: 'm2', blood_comp: 'm1', table25_1: 'm1', table25_2: 'm2', table25_3: 'm3', table25_4: 'm8', rbc_normal: 'm4', rbc_sickle: 'm4', leuk_child: 'm6', ems_care: 'm6' };
+const IX_NAMES = { label: 'Tap-to-label', order: 'Sequence builder', sort: 'Sort game', match: 'Match game', tube: 'Centrifuge', labcheck: 'CBC analyzer', tdrill: 'Table drill', triage: 'Clinical case', compare: 'Picture compare', rbc3d: '3D model', visc: 'Flow simulator', cascade: 'Cascade simulator', dic: 'DIC stages', bloodmatch: 'Blood bank game', transfuse: 'Transfusion monitor' };

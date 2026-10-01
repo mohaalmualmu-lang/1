@@ -189,7 +189,7 @@ VIEWS.hub = (app) => {
   let type = 'All', sel = [];
   const top = el(`<div style="display:grid;gap:10px">
     <button class="btn primary block" data-quiz>${I.spark} Which one is it? (10 rounds)</button>
-    <div class="filters">${['All', ...new Set(ENTITIES.map(e => e.ty))].map(t => `<button data-ty="${t}" aria-pressed="${t === 'All'}">${t === 'All' ? 'All' : t + 's'}</button>`).join('')}</div>
+    <div class="filters">${['All', ...new Set(ENTITIES.map(e => e.ty))].map(t => `<button data-ty="${t}" aria-pressed="${t === 'All'}">${t === 'All' ? 'All' : t.endsWith('s') ? t + 'es' : t + 's'}</button>`).join('')}</div>
     <p class="muted" style="font-size:13.5px">Tap two cards to compare them side by side.</p>
     <div class="cmpbox"></div></div>`);
   m.appendChild(top);

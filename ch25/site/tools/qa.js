@@ -14,7 +14,7 @@ const shotsDir = process.argv.includes('--shots') ? process.argv[process.argv.in
 function harness() {
   const body = fs.readFileSync(path.join(ROOT, 'dist/index.html'), 'utf8');
   const html = `<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>${RESET}</style></head><body>${body}</body></html>`;
-  const f = path.join(ROOT, 'dist/_qa.html');
+  const f = path.join(ROOT, `dist/_qa_${process.env.THEMES || 'all'}.html`.replace(',', '_'));
   fs.writeFileSync(f, html);
   return 'file://' + f;
 }
@@ -45,7 +45,8 @@ async function run(theme, OUT) {
   await page.waitForSelector('.hero');
   await checkOverflow('home'); await shot('home');
 
-  const mods = await page.evaluate(() => MODULES.filter(m => CONTENT[m.id]).map(m => m.id));
+  let mods = await page.evaluate(() => MODULES.filter(m => CONTENT[m.id]).map(m => m.id));
+  if (process.env.ONLY) mods = mods.filter(m => process.env.ONLY.split(',').includes(m));
   for (const mid of mods) {
     await page.evaluate(id => openModule(id, 0), mid);
     const total = await page.evaluate(id => flowOf(id).length, mid);
@@ -104,6 +105,29 @@ async function run(theme, OUT) {
           await shot(`${mid}-ix-${st.id}-b`);
         } else if (st.kind === 'tdrill') {
           for (let g = 0; g < 60; g++) { const o = await page.$('.ix .tdcard .opt[data-ok]:not([disabled])'); if (!o) break; await o.click(); await page.click('.ix .tdcard [data-nextd]'); }
+        } else if (st.kind === 'rbc3d') {
+          await page.waitForTimeout(1800);
+          const cv = await page.$('.stage3d canvas'); if (!cv) issues.push(`[${theme}] 3D RBC did not render at ${where}`);
+          await page.$eval('.ctrl3d input', e => { e.value = 100; e.dispatchEvent(new Event('input')); });
+          await page.waitForTimeout(1200); await shot(`${mid}-ix-${st.id}`);
+          await page.click('.ix .cp .opt[data-ok]');
+        } else if (st.kind === 'visc') {
+          for (const v of [25, 62]) await page.$eval('#vhct', (e, v) => { e.value = v; e.dispatchEvent(new Event('input')); }, v);
+          await page.click('.viscix [data-phleb]'); await page.waitForTimeout(1500); await shot(`${mid}-ix-${st.id}`);
+        } else if (st.kind === 'cascade') {
+          for (const k of ['normal', 'A', 'B']) { await page.click(`.ix [data-run="${k}"]`); await page.waitForTimeout(3800); }
+          await shot(`${mid}-ix-${st.id}`);
+        } else if (st.kind === 'dic') {
+          for (let g = 0; g < 2; g++) { await page.click('.dicix [data-nstage]'); await page.click('.dicix .dq .opt[data-ok]'); await page.waitForTimeout(100); }
+          await shot(`${mid}-ix-${st.id}`);
+        } else if (st.kind === 'bloodmatch') {
+          for (let g = 0; g < 8; g++) { if (await page.$('.ix .win')) break; for (const b of await page.$$('.ix .bag[data-ok]')) await b.click(); await page.click('.ix [data-check]'); await page.click('.ix [data-nextm]'); }
+          await shot(`${mid}-ix-${st.id}`);
+        } else if (st.kind === 'transfuse') {
+          await page.click('.tfix [data-start]'); await page.waitForSelector('.tfix .tray .chipbtn', { timeout: 15000 });
+          await shot(`${mid}-ix-${st.id}-a`);
+          for (let i2 = 0; i2 < 6; i2++) await page.click(`.tfix .tray .chipbtn[data-i="${i2}"]`);
+          await shot(`${mid}-ix-${st.id}-b`);
         } else if (st.kind === 'aki') {
           for (const k of ['pre', 'intra', 'post']) await page.click(`.aki [data-m="${k}"]`);
         } else if (st.kind === 'foley') {
@@ -127,7 +151,7 @@ async function run(theme, OUT) {
           const fb = await page.$('.stage3d .fallback:not([hidden])');
           const cv = await page.$('.stage3d canvas');
           if (fb || !cv) issues.push(`[${theme}] 3D kidney did not render at ${where}`);
-          if (st.spec.stone && cv) { await page.click('[data-drop]'); await page.waitForTimeout(3600); }
+          if (st.spec.stone && cv) { await page.click('[data-drop]'); await page.waitForTimeout(3800); }
         } else if (st.kind === 'triage') {
           const correct = st.spec.cases.map(c => c.opts[0]);
           for (let g = 0; g < 40; g++) {
@@ -234,7 +258,7 @@ async function run(theme, OUT) {
 (async () => {
   if (shotsDir) fs.mkdirSync(shotsDir, { recursive: true });
   let fail = 0;
-  for (const theme of ['dark', 'light']) {
+  for (const theme of (process.env.THEMES || 'dark,light').split(',')) {
     const OUT = { errors: [], issues: [] }; const { errors, issues } = OUT;
     try { await run(theme, OUT); } catch (e) { issues.push('CRASH after ' + LAST + ': ' + e.message.split('\n')[0]); }
     console.log(`== ${theme}: ${errors.length} errors, ${issues.length} issues`);

@@ -112,7 +112,7 @@ function stage3d(host, opts, build) {
   return api;
 }
 function stdMat(THREE, color, extra = {}) { return new THREE.MeshStandardMaterial(Object.assign({ color, roughness: 0.55, metalness: 0.05 }, extra)); }
-function tag(mesh, en, ar, note) { mesh.userData = { en, ar, note }; return mesh; }
+function tag(mesh, en, ar, note) { Object.assign(mesh.userData, { en, ar, note }); return mesh; }
 
 /* ---------- triage / clinical case engine ---------- */
 IX.triage = function (spec, host, done) {
@@ -403,4 +403,304 @@ IX.tdrill = function (spec, host, done) {
     });
   }
   start();
+};
+
+/* shared: one checkpoint question inside an interactive (data-ok marks the right option for QA) */
+function checkpoint(host, q, opts, why, onRight) {
+  const box = el(`<div class="cp"><p class="stem" style="font-weight:600;font-size:16px">${q}</p><div class="opts"></div></div>`);
+  host.appendChild(box);
+  const o = $('.opts', box);
+  shuffle(opts.map((t, j) => ({ t, j }))).forEach((x, pos) => {
+    const b = el(`<button class="opt" ${x.j === 0 ? 'data-ok="1"' : ''}><span class="L">${'ABCD'[pos]}</span><span>${x.t}</span></button>`);
+    b.onclick = () => {
+      if (x.j === 0) { sfx.ok(); $$('.opt', o).forEach(y => y.disabled = true); b.classList.add('right'); box.appendChild(el(`<div class="callout why"><div>${why}</div></div>`)); onRight && onRight(); }
+      else { sfx.bad(); b.classList.add('wrong'); b.disabled = true; onRight && (onRight.miss = (onRight.miss || 0) + 1); }
+    };
+    o.appendChild(b);
+  });
+  return box;
+}
+
+/* ---------- 3D: red cells in a small vessel; cold makes them sickle and lodge ---------- */
+IX.rbc3d = function (spec, host, done) {
+  const root = el(`<div class="ix"></div>`); host.appendChild(root);
+  const status = el(`<div class="prompt"><div class="find"><small>Small blood vessel</small><span>Smooth, round cells flow freely</span></div><span class="score mono">0%</span></div>`);
+  root.appendChild(status);
+  let level = 0; const S3 = {};
+  stage3d(root, { dist: 12, min: 6, max: 16, ry: 0.35, rx: 0.4, fallback: '<b>3D model unavailable.</b> Normal RBCs are smooth and round. In sickle cell disease they are oblong: poor oxygen carriers that can lodge in small blood vessels, leading to thrombosis. Use the slider and the question below.' }, a => {
+    const { THREE, root: g } = a;
+    const pts = []; for (let i = 0; i <= 12; i++) { const r = i / 12 * 0.5; pts.push(new THREE.Vector2(r, 0.09 + 0.1 * Math.pow(r / 0.5, 2) * (1 - Math.pow(r / 0.5, 6)) - 0.05 * (1 - r / 0.5))); }
+    const half = new THREE.LatheGeometry(pts, 32);
+    const discGeo = new THREE.CylinderGeometry(0.5, 0.5, 0.16, 32, 1); discGeo.scale(1, 0.9, 1);
+    const sickleGeo = new THREE.TorusGeometry(0.45, 0.11, 10, 24, 2.4);
+    const vessel = tag(new THREE.Mesh(new THREE.CylinderGeometry(0.95, 0.95, 9, 40, 1, true), new THREE.MeshStandardMaterial({ color: 0xd98a8a, transparent: true, opacity: 0.18, side: THREE.DoubleSide, depthWrite: false })), 'Small blood vessel', 'وعاء دموي صغير', 'The odd shape of sickle cells can make them lodge in small blood vessels.');
+    vessel.rotation.z = Math.PI / 2; g.add(vessel); a.pickables.push(vessel);
+    const narrow = tag(new THREE.Mesh(new THREE.TorusGeometry(0.85, 0.22, 12, 32), stdMat(THREE, 0xc97a7a, { transparent: true, opacity: 0.55 })), 'Narrow point', 'تضيّق', 'Narrow vessels, such as those of the spleen, are where sickle cells get stuck.');
+    narrow.rotation.y = Math.PI / 2; narrow.position.x = 1.2; g.add(narrow); a.pickables.push(narrow);
+    const cells = [];
+    for (let i = 0; i < 16; i++) {
+      const m = new THREE.Mesh(discGeo, stdMat(THREE, 0xd8343a, { roughness: 0.4 }));
+      tag(m, 'Normal RBC', 'كرية حمراء طبيعية', 'Smooth, round shape: carries oxygen well.');
+      m.userData.x = -4.5 + i * 0.6; m.userData.y = (Math.random() - 0.5) * 0.9; m.userData.z = (Math.random() - 0.5) * 0.9; m.userData.spin = Math.random() * 6; m.userData.s = i % 3 === 0 ? 0 : (i * 0.37) % 1; m.userData.stop = 0.35 - (i % 8) * 0.38;
+      g.add(m); cells.push(m); a.pickables.push(m);
+    }
+    const clot = tag(new THREE.Mesh(new THREE.SphereGeometry(0.75, 20, 14), stdMat(THREE, 0x6b1a1e, { roughness: 0.8 })), 'Blockage (thrombosis)', 'انسداد (تخثّر)', 'Sickled cells lodged in the vessel: pain, ischemia and often organ damage downstream.');
+    clot.position.x = 1.0; clot.scale.set(0.01, 0.01, 0.01); g.add(clot); a.pickables.push(clot);
+    Object.assign(S3, { cells, discGeo, sickleGeo, clot, vessel });
+    a.onFrame.push(dt => {
+      const block = Math.max(0, (level - 55) / 45);
+      clot.scale.setScalar(Math.max(0.01, 0.75 * block));
+      vessel.material.color.setHex(block > 0.5 ? 0x8a5a5a : 0xd98a8a);
+      cells.forEach(c => {
+        const sick = c.userData.s < level / 100;
+        if (sick && c.geometry !== sickleGeo) { c.geometry = sickleGeo; c.material.color.setHex(0xa52a30); tag(c, 'Sickle RBC', 'كرية منجلية', 'Oblong instead of smooth and round: poor oxygen carrier (hypoxia) and much shorter life span (anemia).'); }
+        if (!sick && c.geometry !== discGeo) { c.geometry = discGeo; c.material.color.setHex(0xd8343a); tag(c, 'Normal RBC', 'كرية حمراء طبيعية', 'Smooth, round shape: carries oxygen well.'); }
+        const speed = 1.4 * (1 - 0.85 * block);
+        let x = c.userData.x + dt * speed;
+        const stop = c.userData.stop;
+        if (((block > 0.3 && sick) || block > 0.7) && c.userData.x <= stop + 0.001 && x > stop) x = stop;
+        if (x > 4.5) x = -4.5;
+        c.userData.x = x; c.userData.spin += dt * speed;
+        c.position.set(x, c.userData.y, c.userData.z); c.rotation.set(c.userData.spin, c.userData.spin * 0.6, 0);
+      });
+    });
+  });
+  const ctr = el(`<div class="ctrl3d"><label class="rng"><span>Cold exposure</span><input type="range" min="0" max="100" step="5" value="0" aria-label="Cold exposure"></label>
+    <div class="row"><button class="btn small" data-v="0">Warm</button><button class="btn small" data-v="50">Cool</button><button class="btn small" data-v="100">Cold</button></div></div>`);
+  root.appendChild(ctr);
+  const after = el('<div class="after"></div>'); root.appendChild(after);
+  const rng = $('input', ctr); let asked = false;
+  function apply() {
+    level = +rng.value;
+    const s = level < 30 ? 'Smooth, round cells flow freely' : level < 60 ? 'Cells sickling: poor oxygen carriers' : 'Sickled cells lodge: the vessel is blocked';
+    $('.find span', status).textContent = s; $('.score', status).textContent = level + '%';
+    status.classList.toggle('alarm', level >= 60);
+    if (level >= 60 && !asked) {
+      asked = true; sfx.bad();
+      after.appendChild(el(`<div class="callout flag"><span class="h">Vasoocclusive crisis</span><div>Blood flow to an organ becomes restricted: <k>pain, ischemia and often organ damage</k>, usually lasting <n>5–7 days</n>. This is why your notes say: cover the patient to maintain body temperature, because <k>cold can contribute to sickling of cells</k>.</div></div>`));
+      checkpoint(after, 'Which management step does this model justify?', ['Cover the patient with a blanket to maintain body temperature', 'Apply cold packs to the painful area', 'Withhold oxygen to avoid hyperoxia', 'Keep the patient walking to improve flow'],
+        'Cold can contribute to sickling, so sickle cell management covers the patient to maintain body temperature (A34).', () => { sfx.win(); after.appendChild(winBar('Model explored', null)); done && done({ total: 1, errors: 0 }); });
+    }
+  }
+  rng.oninput = apply;
+  $$('[data-v]', ctr).forEach(b => b.onclick = () => { rng.value = b.dataset.v; apply(); });
+};
+
+/* ---------- too few vs too many red cells: hematocrit, viscosity and phlebotomy ---------- */
+IX.visc = function (spec, host, done) {
+  const root = el(`<div class="ix viscix">
+    <div class="prompt"><div class="find"><small>Hematocrit</small><span data-st></span></div><span class="score mono" data-h></span></div>
+    <div class="seg" role="group" aria-label="Sex"><button data-s="M">Adult male</button><button data-s="F">Adult female</button></div>
+    <canvas class="vcv" width="640" height="190" aria-label="Blood vessel with red cells"></canvas><p class="muted" style="font-size:12.5px;margin:-4px 0 8px">Illustrative animation: more red cells = thicker (more viscous), slower flow.</p>
+    <label class="rng"><span>Hematocrit</span><input id="vhct" type="range" min="15" max="70" step="1" value="44" aria-label="Hematocrit"></label>
+    <div class="vinfo"></div>
+    <div class="row" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-phleb>${I.drill} Phlebotomy</button></div>
+    <ul class="tasks"></ul><div class="after"></div></div>`);
+  host.appendChild(root);
+  const st = { sex: 'M', h: 44 };
+  const tasks = [['low', 'Drag to an anemia-range hematocrit'], ['high', 'Drag into polycythemia (above the normal range)'], ['phleb', 'Bring it back to the phlebotomy target']];
+  const doneT = {};
+  const cv = $('canvas', root), ctx = cv.getContext('2d');
+  const rng = $('input', root);
+  const range = () => st.sex === 'M' ? [40, 50] : [35, 45];
+  const target = () => st.sex === 'M' ? 45 : 42;
+  function tick(k) { if (doneT[k]) return; doneT[k] = 1; sfx.ok(); drawTasks(); if (Object.keys(doneT).length === 3) { sfx.win(); $('.after', root).appendChild(winBar('All three states explored', null)); done && done({ total: 3, errors: 0 }); } }
+  function drawTasks() { $('.tasks', root).innerHTML = tasks.map(([k, t]) => `<li class="${doneT[k] ? 'ok' : ''}">${doneT[k] ? '✓' : '○'} ${t}</li>`).join(''); }
+  function info() {
+    const [a, b] = range(), h = st.h;
+    $$('[data-s]', root).forEach(x => x.setAttribute('aria-pressed', x.dataset.s === st.sex));
+    $('[data-h]', root).textContent = h + '%';
+    let s, html;
+    if (h < a) { s = 'LOW: fewer red cells than normal'; html = `<b>Anemia picture.</b> Anemia = a hemoglobin or RBC level that is lower than normal. Patients feel worn down, have no energy, cannot catch their breath, and may have anginal-type chest pain (reduced oxygen supply to the heart). Normal ${st.sex === 'M' ? 'male' : 'female'} hematocrit: <n>${a}–${b}%</n>.`; tick('low'); }
+    else if (h > b) { s = 'HIGH: overabundance of red cells'; html = `<b>Polycythemia picture.</b> Overabundance or overproduction of RBCs → <k>increased blood viscosity and volume</k> → congestion of tissues and organs; <k>hyperviscosity increases the risk of thrombus formation</k>. Phlebotomy keeps hematocrit <n>&lt; ${target()}%</n> in ${st.sex === 'M' ? 'men' : 'women'}.`; tick('high'); }
+    else { s = 'Within the normal range'; html = `Normal ${st.sex === 'M' ? 'adult male' : 'adult female'} hematocrit in Table 25-1: <n>${a}–${b}%</n>. Phlebotomy target in polycythemia: <n>&lt; 45%</n> men, <n>&lt; 42%</n> women.`; }
+    $('[data-st]', root).textContent = s;
+    $('.vinfo', root).innerHTML = html;
+    $('[data-phleb]', root).disabled = h < target();
+    root.classList.toggle('alarm', h > b);
+  }
+  $$('[data-s]', root).forEach(b => b.onclick = () => { st.sex = b.dataset.s; info(); });
+  rng.oninput = () => { st.h = +rng.value; info(); };
+  $('[data-phleb]', root).onclick = () => {
+    const t = target() - 1; sfx.tap();
+    const step = () => { if (st.h > t) { st.h--; rng.value = st.h; info(); setTimeout(step, REDUCED ? 0 : 60); } else { $('.after', root).prepend(el(`<div class="callout why"><div>Phlebotomy (removing blood) brought the hematocrit to <n>${st.h}%</n>, below the <n>${target()}%</n> target for ${st.sex === 'M' ? 'men' : 'women'}.</div></div>`)); tick('phleb'); } };
+    step();
+  };
+  /* animation: cell count follows hematocrit, speed falls as viscosity rises (illustrative) */
+  const cells = Array.from({ length: 140 }, (_, i) => ({ x: Math.random() * 640, y: 30 + Math.random() * 130, r: i % 23 === 0 ? 'w' : 'r' }));
+  let lastT = performance.now();
+  (function loop(now) {
+    if (!cv.isConnected) return;
+    requestAnimationFrame(loop);
+    const dt = Math.min(0.05, (now - lastT) / 1000); lastT = now;
+    const n = Math.round(st.h * 1.9), speed = REDUCED ? 0 : 160 * Math.max(0.12, 1.25 - st.h / 55);
+    ctx.clearRect(0, 0, 640, 190);
+    ctx.fillStyle = '#f6e6a6'; ctx.globalAlpha = 0.9; ctx.fillRect(0, 22, 640, 146); ctx.globalAlpha = 1;
+    ctx.strokeStyle = '#c97a7a'; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(0, 19); ctx.lineTo(640, 19); ctx.moveTo(0, 171); ctx.lineTo(640, 171); ctx.stroke();
+    for (let i = 0; i < n; i++) {
+      const c = cells[i]; c.x += dt * speed * (0.8 + (i % 5) * 0.08); if (c.x > 650) c.x = -10;
+      ctx.beginPath();
+      if (c.r === 'w') { ctx.fillStyle = '#c9d8ff'; ctx.arc(c.x, c.y, 8, 0, 7); }
+      else { ctx.fillStyle = '#d23a40'; ctx.ellipse(c.x, c.y, 8, 6, 0, 0, 7); }
+      ctx.fill();
+    }
+  })(lastT);
+  drawTasks(); info();
+};
+
+/* ---------- block a clotting factor on the real cascade figure ---------- */
+IX.cascade = function (spec, host, done) {
+  const f = FIGS.cascade;
+  const path = f.paths.intrinsic;
+  const root = el(`<div class="ix">
+    <div class="prompt"><div class="find"><small>Intrinsic pathway</small><span>Run the cascade</span></div><span class="score"></span></div>
+    <div class="figslot"></div>
+    <div class="row runs" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+    <div class="cmsg"></div><div class="after"></div></div>`);
+  host.appendChild(root);
+  const fig = figureEl('cascade', { labels: false });
+  $('.figslot', root).appendChild(zoomable(fig));
+  const runs = [
+    { k: 'normal', t: 'Normal', stopAt: null, msg: 'Every factor is present: the cascade runs through IXa, VIII, X, II to fibrin and insoluble fibrin. A clot forms.' },
+    { k: 'A', t: 'Hemophilia A · low factor VIII', stopAt: 'k_viii', msg: '<b>Hemophilia A</b>: low levels of <k>factor VIII</k> (antihemophilic globulin and antihemophilic factor). On the figure, VIII (AHF) is needed with Ca²⁺ and platelet lipid to move on to X. Clotting does not occur or occurs insufficiently.' },
+    { k: 'B', t: 'Hemophilia B · low factor IX', stopAt: 'k_ix', msg: '<b>Hemophilia B</b>: deficiency of <k>factor IX</k> (plasma thromboplastin component, the Christmas factor). Without IX → IXa the intrinsic route stalls. Signs and symptoms are the same in both types.' },
+  ];
+  const did = {}; let drop = null, busy = false, xm = null;
+  const pt = i => ({ left: path[i].pt[0] + '%', top: path[i].pt[1] + '%' });
+  runs.forEach(r => { const b = el(`<button class="btn small" data-run="${r.k}">${I.play} ${esc(r.t)}</button>`); b.onclick = () => go(r); $('.runs', root).appendChild(b); });
+  function go(r) {
+    if (busy) return; busy = true; sfx.tap();
+    if (drop) drop.remove(); if (xm) xm.remove();
+    drop = el('<span class="drop"></span>'); fig.appendChild(drop); Object.assign(drop.style, pt(0));
+    const end = r.stopAt ? path.findIndex(p => p.stop === r.stopAt) : path.length - 1;
+    const frames = []; for (let i = 0; i <= end; i++) frames.push(pt(i));
+    $('.find span', root).textContent = r.t; $('.cmsg', root).innerHTML = '';
+    const fin = () => {
+      Object.assign(drop.style, frames[frames.length - 1]); busy = false;
+      if (r.stopAt) { xm = el(`<span class="xmark" style="left:${path[end].pt[0]}%;top:${path[end].pt[1]}%">✕</span>`); fig.appendChild(xm); sfx.bad(); } else sfx.ok();
+      $('.cmsg', root).innerHTML = `<div class="callout ${r.stopAt ? 'flag' : 'why'}"><div>${r.msg}</div></div>`;
+      did[r.k] = 1; $('.score', root).textContent = `${Object.keys(did).length}/3`;
+      if (Object.keys(did).length === 3 && !did.won) { did.won = 1; sfx.win(); $('.after', root).appendChild(winBar('All three runs compared', null)); done && done({ total: 3, errors: 0 }); }
+    };
+    if (REDUCED || !drop.animate) return fin();
+    drop.animate(frames, { duration: 170 * frames.length, easing: 'linear' }).onfinish = fin;
+  }
+  $('.score', root).textContent = '0/3';
+};
+
+/* ---------- DIC: two stages ---------- */
+IX.dic = function (spec, host, done) {
+  const root = el(`<div class="ix dicix">
+    <div class="prompt"><div class="find"><small>DIC</small><span data-t>Before DIC</span></div><span class="score" data-s>0/2</span></div>
+    <svg class="dsv" viewBox="0 0 320 120" role="img" aria-label="Blood vessel">
+      <rect x="0" y="20" width="320" height="80" rx="10" class="dw"/><g class="dc"></g><g class="db"></g></svg>
+    <div class="meters"><div><small>Free thrombin & fibrin deposits</small><i><b data-m="f"></b></i></div><div><small>Clotting factors left</small><i><b data-m="c"></b></i></div><div><small>Bleeding</small><i><b data-m="b"></b></i></div></div>
+    <button class="btn primary" data-nstage>Next stage ${I.next}</button>
+    <div class="dq"></div><div class="after"></div></div>`);
+  host.appendChild(root);
+  let stage = 0, right = 0;
+  const T = ['Before DIC', 'Stage 1: clots everywhere', 'Stage 2: uncontrolled hemorrhage'];
+  function draw() {
+    $('[data-t]', root).textContent = T[stage];
+    const m = [[5, 100, 0], [90, 40, 10], [30, 5, 100]][stage];
+    ['f', 'c', 'b'].forEach((k, i) => $(`[data-m="${k}"]`, root).style.width = m[i] + '%');
+    $('.dc', root).innerHTML = stage === 1 ? Array.from({ length: 16 }, (_, i) => `<circle cx="${12 + i * 19}" cy="${30 + (i * 37) % 60}" r="${4 + (i % 3) * 2}" class="clot"/>`).join('') : stage === 2 ? Array.from({ length: 5 }, (_, i) => `<circle cx="${30 + i * 60}" cy="${40 + (i * 23) % 40}" r="3" class="clot"/>`).join('') : '';
+    $('.db', root).innerHTML = stage === 2 ? Array.from({ length: 7 }, (_, i) => `<path class="bleed" d="M${25 + i * 45} 100 q-6 12 0 16 q6-4 0-16z"/>`).join('') : '';
+    $('[data-nstage]', root).hidden = stage === 2 || !!$('.dq .cp:not(.answered)', root);
+  }
+  const Q = [null,
+    ['In the first stage of DIC, which happens?', ['Free thrombin and fibrin deposits increase, platelets aggregate, and defibrination occurs', 'Clotting factors run out and uncontrolled hemorrhage begins', 'Plasma cells form tumors in the bone', 'RBCs become trapped in the spleen'], 'Stage 1: free thrombin and fibrin deposits in the blood increase; platelets begin to aggregate; defibrination (breakdown of the fibrin clots) occurs.'],
+    ['What causes the bleeding in the second stage?', ['A reduction in clotting factors', 'Too many platelets', 'A deficiency of factor VIII only', 'Hyperviscosity of the blood'], 'Stage 2: uncontrolled hemorrhage results from a reduction in clotting factors. Death is related to uncontrolled bleeding, hypotension and shock.']];
+  $('[data-nstage]', root).onclick = () => {
+    stage++; sfx.tap(); $('.dq', root).innerHTML = '';
+    const [q, o, w] = Q[stage];
+    const cp = checkpoint($('.dq', root), q, o, w, () => { cp.classList.add('answered'); right++; $('[data-s]', root).textContent = `${right}/2`; draw(); if (right === 2) { sfx.win(); $('.after', root).appendChild(winBar('Both stages of DIC explained', null)); done && done({ total: 2, errors: 0 }); } });
+    draw();
+  };
+  draw();
+};
+
+/* ---------- blood compatibility (Table 25-4) ---------- */
+IX.bloodmatch = function (spec, host, done) {
+  const types = ['A+', 'A−', 'B+', 'B−', 'AB+', 'AB−', 'O+', 'O−'];
+  const rounds = spec.rounds;
+  const root = el(`<div class="ix">
+    <div class="prompt"><div class="find"><small>Recipient</small><span data-r></span></div><span class="score" data-s></span></div>
+    <p class="muted" style="font-size:13.5px">Tap every donor bag this patient may receive (preferred + additional permissible types), then check.</p>
+    <div class="bags"></div><button class="btn primary" data-check>Check</button><div class="fb"></div><div class="after"></div></div>`);
+  host.appendChild(root);
+  let k = 0, errors = 0, sel;
+  function show() {
+    const r = rounds[k], row = T254.find(x => x.r === r);
+    sel = new Set();
+    $('[data-r]', root).textContent = `${r} patient`; $('[data-s]', root).textContent = `${k}/${rounds.length}`;
+    $('.fb', root).innerHTML = ''; $('[data-check]', root).hidden = false;
+    const bags = $('.bags', root); bags.innerHTML = '';
+    types.forEach(t => {
+      const ok = t === row.p || row.add.includes(t);
+      const b = el(`<button class="bag" ${ok ? 'data-ok="1"' : ''} aria-pressed="false"><svg viewBox="0 0 30 40" aria-hidden="true"><path d="M6 4h18v26a9 9 0 0 1-18 0z"/><path d="M15 0v4" /></svg><b>${t}</b></button>`);
+      b.onclick = () => { if (sel.done) return; sel.has(t) ? sel.delete(t) : sel.add(t); b.setAttribute('aria-pressed', sel.has(t)); sfx.tap(); };
+      bags.appendChild(b);
+    });
+  }
+  $('[data-check]', root).onclick = () => {
+    const r = rounds[k], row = T254.find(x => x.r === r), good = new Set([row.p, ...row.add]);
+    const wrong = [...sel].filter(t => !good.has(t)), missed = [...good].filter(t => !sel.has(t));
+    $$('.bag', root).forEach(b => { const t = $('b', b).textContent; b.classList.add(good.has(t) ? 'okb' : 'nob'); });
+    if (!wrong.length && !missed.length) {
+      sfx.ok(); sel.done = true; $('[data-check]', root).hidden = true;
+      $('.fb', root).innerHTML = `<div class="callout why"><div><b>${r}</b>: preferred donor <b>${row.p}</b>; additional permissible: <b>${row.add.length ? row.add.join(', ') : 'none'}</b>.</div></div>`;
+      const nb = el(`<button class="btn primary small" data-nextm style="margin-top:10px">${k + 1 < rounds.length ? 'Next patient' : 'Finish'} ${I.next}</button>`);
+      nb.onclick = () => { k++; if (k < rounds.length) show(); else { sfx.win(); $('[data-s]', root).textContent = `${rounds.length}/${rounds.length}`; $('.fb', root).innerHTML = ''; $('.after', root).appendChild(winBar(errors ? `All patients matched · ${errors} wrong check${errors > 1 ? 's' : ''}` : 'Every patient matched first time', null)); done && done({ total: rounds.length, errors }); } };
+      $('.fb', root).appendChild(nb);
+    } else {
+      sfx.bad(); errors++;
+      $('.fb', root).innerHTML = `<div class="callout flag"><div>${wrong.length ? `Not permissible: <b>${wrong.join(', ')}</b>. ` : ''}${missed.length ? `Also allowed: <b>${missed.join(', ')}</b>. ` : ''}Green bags are allowed. Fix your picks and check again.</div></div>`;
+      setTimeout(() => $$('.bag', root).forEach(b => b.classList.remove('okb', 'nob')), 1800);
+    }
+  };
+  show();
+};
+
+/* ---------- transfusion monitor: watch the first minutes, then manage the reaction in order ---------- */
+IX.transfuse = function (spec, host, done) {
+  const steps = ['Immediately stop the transfusion', 'Recheck donor blood: was the wrong blood given?', 'Contact medical control', 'Provide supportive care (counteract shock)', 'Replace existing IV tubing and bag with normal saline', 'Retain blood products and tubing; transfer them to the hospital'];
+  const root = el(`<div class="ix tfix">
+    <div class="tmon"><div class="mtop"><span class="lead">TRANSFUSION</span><span>min <b data-t>0</b></span></div>
+      <div class="vit"><div><small>HR</small><b data-hr>84</b></div><div><small>BP</small><b data-bp>124/78</b></div><div><small>TEMP</small><b data-tp>36.8</b></div><div><small>BAG</small><b data-bag>running</b></div></div>
+      <div class="sx" data-sx>Watch closely: the first 30 to 60 minutes.</div></div>
+    <button class="btn primary" data-start>${I.play} Start the transfusion</button>
+    <ol class="seq"></ol><div class="tray"></div><div class="after"></div></div>`);
+  host.appendChild(root);
+  let t = 0, timer = null, k = 0, errors = 0, react = false;
+  const set = (a, v) => { $(`[data-${a}]`, root).textContent = v; };
+  $('[data-start]', root).onclick = () => {
+    $('[data-start]', root).hidden = true; sfx.tap();
+    timer = setInterval(() => {
+      t += 2; set('t', t);
+      if (t >= 14 && !react) {
+        react = true; clearInterval(timer); root.classList.add('alarm'); sfx.bad();
+        set('hr', 128); set('bp', '84/50'); set('tp', '38.9');
+        $('[data-sx]', root).innerHTML = '<b>Acute reaction:</b> chills · fever · back pain · vomiting · tachycardia · hypotension';
+        startSteps();
+      }
+    }, REDUCED ? 60 : 280);
+  };
+  function startSteps() {
+    $('.seq', root).innerHTML = steps.map(() => '<li>?</li>').join('');
+    const tray = $('.tray', root);
+    tray.before(el('<p class="stem" style="font-weight:600;font-size:16px;margin:4px 0">Manage the reaction: tap the steps in order.</p>'));
+    shuffle(steps.map((s, i) => ({ s, i }))).forEach(o => {
+      const b = el(`<button class="chipbtn" data-i="${o.i}">${esc(o.s)}</button>`);
+      b.onclick = () => {
+        if (o.i === k) {
+          sfx.ok(); b.classList.add('done'); const li = $$('.seq li', root)[k]; li.classList.add('on'); li.textContent = o.s; k++;
+          if (k === 1) { set('bag', 'STOPPED'); }
+          if (k === 5) set('bag', 'saline');
+          if (k === steps.length) { root.classList.remove('alarm'); set('hr', 104); set('bp', '102/64'); sfx.win(); $('.after', root).appendChild(winBar(errors ? `Reaction managed · ${errors} wrong pick${errors > 1 ? 's' : ''}` : 'Reaction managed in the right order', null)); $('.after', root).appendChild(el('<p class="muted" style="font-size:14px">Severity correlates to the amount of blood volume transfused, which is why stopping comes first.</p>')); done && done({ total: steps.length, errors }); }
+        } else { sfx.bad(); errors++; b.classList.remove('bad'); void b.offsetWidth; b.classList.add('bad'); }
+      };
+      tray.appendChild(b);
+    });
+  }
 };
