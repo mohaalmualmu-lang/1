@@ -1,0 +1,10 @@
+{
+ "table25_1": {"src": "table_25-1.jpg", "w": 1000, "q": 66},
+ "table25_2": {"src": "table_25-2.jpg", "w": 1000, "q": 66},
+ "table25_3": {"src": "table_25-3.jpg", "w": 577, "q": 70},
+ "table25_4": {"src": "table_25-4.jpg", "w": 643, "q": 70},
+ "rbc_normal": {"src": "photo_normal_rbc.jpg", "w": 481},
+ "rbc_sickle": {"src": "photo_sickle_rbc.jpg", "w": 482},
+ "leuk_child": {"src": "photo_leukemia_child.jpg", "w": 376},
+ "ems_care": {"src": "photo_ems_care.jpg", "w": 482}
+}

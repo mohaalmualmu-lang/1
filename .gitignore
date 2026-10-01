@@ -1,3 +1,4 @@
 .check/
 __pycache__/
 site/dist/_qa.html
+ch25/site/dist/_qa.html
