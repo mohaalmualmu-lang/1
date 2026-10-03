@@ -1,0 +1,40 @@
+{
+  "project": "study-platform",
+  "description": "منصة مذاكرة محسّنة الأداء",
+  "stack": {
+    "frontend": "Next.js 14 + React 18 + TailwindCSS",
+    "backend": "Node.js + Express",
+    "database": "Supabase (PostgreSQL)",
+    "cache": "Redis",
+    "hosting": "Vercel"
+  },
+  "dependencies": {
+    "next": "^14.0.0",
+    "react": "^18.2.0",
+    "tailwindcss": "^3.3.0",
+    "supabase-js": "^2.38.0",
+    "redis": "^4.6.0",
+    "zod": "^3.22.0",
+    "typescript": "^5.2.0"
+  },
+  "features": [
+    "Flashcard System - بطاقات ذاكرة تفاعلية",
+    "Spaced Repetition - تكرار منظم للمحتوى",
+    "Quiz Generator - إنشاء اختبارات تلقائية",
+    "Progress Tracking - متابعة التقدم والإحصائيات",
+    "PWA Support - تطبيق ويب يعمل بدون إنترنت",
+    "Image Optimization - تحسين جودة الصور وتقليل الحجم"
+  ],
+  "performance": {
+    "caching": "Redis + Browser Cache + CDN",
+    "optimization": "Code Splitting + Lazy Loading + Compression",
+    "monitoring": "Vercel Analytics + Error Tracking",
+    "target": "First Contentful Paint < 1s"
+  },
+  "environment": {
+    "NEXT_PUBLIC_SUPABASE_URL": "your_supabase_url",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "your_anon_key",
+    "REDIS_URL": "your_redis_url",
+    "DATABASE_URL": "your_postgres_url"
+  }
+}
