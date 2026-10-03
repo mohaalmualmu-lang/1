@@ -47,6 +47,7 @@ function renderQ(q, host, opts = {}) {
     if (!ok && i !== trapI && q.opts[i]) fb.appendChild(el(`<p class="muted" style="font-size:13.5px;margin-top:8px">You picked “${strip(q.opts[i])}”. It does not fit: re-read the explanation above.</p>`));
     if (q.flag) fb.appendChild(el(`<div class="callout beyond" style="margin-top:8px"><span class="h">⚑ Flag</span><div>${q.flag}</div></div>`));
     if (q.src) fb.appendChild(el(`<div class="src" style="margin-top:8px">Source: ${esc(q.src)}</div>`));
+    fb.classList.add('ra-unit'); if (window.ReadAloud) ReadAloud.attach(root);
     opts.onAnswer && opts.onAnswer(ok, i);
   }
   host.appendChild(root);
@@ -79,7 +80,8 @@ function renderSA(q, host, opts = {}) {
       const got = gotSet ? gotSet.has(i) : false;
       list.appendChild(el(`<label class="${gotSet ? (got ? 'got' : 'miss') : ''}"><input type="checkbox" ${got ? 'checked' : ''}> <span>${p}</span></label>`));
     });
-    fb.appendChild(el(`<div class="callout why"><span class="h">Model answer</span><div>${q.model}</div></div>`));
+    fb.appendChild(el(`<div class="callout why ra-unit"><span class="h">Model answer</span><div>${q.model}</div></div>`));
+    setTimeout(() => window.ReadAloud && ReadAloud.attach(fb));
     fb.appendChild(el(`<p class="eyebrow" style="margin-top:12px">Tick every point your answer included</p>`));
     fb.appendChild(list);
     const row = el(`<div class="row" style="margin-top:10px"><button class="btn primary small" data-mark>Save my mark</button></div>`);

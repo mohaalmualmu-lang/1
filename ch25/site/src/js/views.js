@@ -97,6 +97,7 @@ const NAVOF = { home: 'home', learn: 'learn', module: 'learn', cards: 'cards', s
 
 function render() {
   const app = $('#app');
+  if (window.ReadAloud) ReadAloud.stop();
   app.innerHTML = '';
   const view = VIEWS[R.view] || VIEWS.home;
   view(app, R.params);
@@ -108,6 +109,7 @@ function render() {
     app.appendChild(nav);
   }
   $$('[data-needs-claude]').forEach(n => n.hidden = !SAMPLE);
+  if (window.ReadAloud) ReadAloud.attach(app);
 }
 function topBar(title, sub, opts = {}) {
   const t = el(`<header class="top">
@@ -282,7 +284,7 @@ STEP_RENDER.intro = (w, s, { mod, c, counts, setNext }) => {
   w.appendChild(el(`<div class="kind"><span class="tag teach">Module ${mod.n}</span></div>`));
   w.appendChild(el(`<h2>${esc(mod.title)}</h2>`));
   w.appendChild(el(`<p class="ar" style="font-size:16px;color:var(--text2)">${esc(mod.ar)}</p>`));
-  w.appendChild(el(`<p class="lede">${c.intro}</p>`));
+  w.appendChild(el(`<p class="lede ra-unit">${c.intro}</p>`));
   w.appendChild(el(`<div class="stats"><div><b>${counts.card}</b><span>idea cards</span></div><div><b>${counts.ix}</b><span>interactives</span></div><div><b>${counts.q}</b><span>questions</span></div></div>`));
   w.appendChild(el(`<div class="callout hook"><span class="h">How this works</span><div>Some cards ask you to <b>think first</b>: answer in your head, then reveal. Questions ${S.set.qmode === 'inline' ? 'appear right after the idea they test' : 'are grouped at the end (change this in Settings)'}. Anything you miss comes back in the lock-in round and in your flashcards.</div></div>`));
   setNext('Start');
@@ -293,7 +295,7 @@ STEP_RENDER.card = (w, s, { c, flow, p }) => {
   const total = c.steps.filter(x => x.t === 'card').length;
   w.appendChild(el(`<div class="kind"><span class="tag teach">Idea ${n} of ${total}</span></div>`));
   w.appendChild(el(`<h2>${esc(s.title)}</h2>`));
-  const content = el('<div style="display:grid;gap:16px"></div>');
+  const content = el('<div class="ra-unit" style="display:grid;gap:16px"></div>');
   const body = el(`<div>${s.body.map(b => `<p class="lede">${b}</p>`).join('')}</div>`);
   if (s.predict && !p.seen[s.id]) {
     const pr = el(`<div class="predict"><div class="q">${s.predict.q}</div><button class="btn small">Reveal</button></div>`);
@@ -427,7 +429,7 @@ STEP_RENDER.recall = (w, s, { mid, c }) => {
 STEP_RENDER.hooks = (w, s, { c }) => {
   w.appendChild(el(`<div class="kind"><span class="tag teach">Memory hooks</span></div>`));
   w.appendChild(el(`<h2>Hooks to carry into the exam</h2>`));
-  const box = el('<div class="hooks"></div>');
+  const box = el('<div class="hooks ra-unit"></div>');
   c.hooks.forEach(h => box.appendChild(el(`<div class="hk"><span class="ic">${esc(h.ic)}</span><div><b>${esc(h.t)}</b><p>${esc(h.d)}</p></div></div>`)));
   w.appendChild(box);
 };
@@ -501,7 +503,9 @@ function runCards(m, queue, practice = false) {
     const [again, ok] = $$('button', btns);
     again.onclick = () => { if (!practice) gradeCard(c.id, false); queue.shift(); queue.splice(Math.min(3, queue.length), 0, c); if (!c._seen) { done++; c._seen = 1; } sfx.bad(); show(); };
     ok.onclick = () => { if (!practice) gradeCard(c.id, true); queue.shift(); if (!c._seen) { done++; got++; } delete c._seen; sfx.ok(); show(); };
+    $$('.face', card).forEach(f => f.classList.add('ra-unit'));
     host.appendChild(card); host.appendChild(btns);
+    if (window.ReadAloud) ReadAloud.attach(card);
   }
   show();
 }

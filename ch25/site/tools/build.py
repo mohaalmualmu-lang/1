@@ -31,6 +31,7 @@ def main():
         head.strip(),
         "<style>\n" + css + "\n</style>",
         '<div id="app"></div>',
+        "<script>\n" + (SRC / "vendor" / "read-aloud.js").read_text().replace("</script", "<\\/script") + "\n</script>",
         "<script>",
         "const FIGS = " + json.dumps(figs, ensure_ascii=False) + ";",
         "const IMG = " + json.dumps(imgs) + ";",

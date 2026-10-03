@@ -665,3 +665,10 @@ table.t tr:last-child td{border-bottom:0}
 ol.legend.fixed{list-style:none;padding:0;margin:8px 0 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:4px 10px;font-size:13px}
 ol.legend.fixed li{display:flex;gap:8px;align-items:center}
 ol.legend.fixed b{flex:none}
+
+/* ===== read-aloud: player and highlight in the site palette ===== */
+:root{--ra-accent:#2fd3bf;--ra-on-accent:#032621;--ra-soft:rgba(47,211,191,.22);--ra-surface:var(--surface);--ra-text:var(--text);--ra-muted:var(--muted);--ra-line:var(--line2);--ra-shadow:var(--shadow);--ra-radius:16px}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--ra-accent:#087a6d;--ra-on-accent:#ffffff;--ra-soft:rgba(10,138,123,.16)}}
+:root[data-theme="light"]{--ra-accent:#087a6d;--ra-on-accent:#ffffff;--ra-soft:rgba(10,138,123,.16)}
+.ra-btn{justify-self:start;font-family:var(--f-body)}
+.fc .face .ra-btn{position:relative;z-index:2}
